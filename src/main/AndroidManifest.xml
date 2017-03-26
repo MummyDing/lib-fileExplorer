@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.micode.fileexplorer"
+    android:versionCode="1"
+    android:versionName="2.2.0">
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+
+</manifest>
