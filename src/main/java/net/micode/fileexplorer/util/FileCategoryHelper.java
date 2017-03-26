@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -29,8 +29,9 @@ import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Video;
 import android.util.Log;
 
-import net.micode.fileexplorer.FileSortHelper.SortMethod;
-import net.micode.fileexplorer.MediaFile.MediaFileType;
+import net.micode.fileexplorer.util.FileSortHelper.SortMethod;
+import net.micode.fileexplorer.util.MediaFile.MediaFileType;
+import net.micode.fileexplorer.R;
 
 import java.io.FilenameFilter;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class FileCategoryHelper {
     private static final String LOG_TAG = "FileCategoryHelper";
 
     public enum FileCategory {
-        All, Music, Video, Picture, Doc, Zip, Apk, Custom, Other, Theme, Favorite
+        All, Music, Video, Picture, Doc, Zip, Apk, Custom, Other
     }
 
     private static String APK_EXT = "apk";
@@ -73,7 +74,7 @@ public class FileCategoryHelper {
     }
 
     public static FileCategory[] sCategories = new FileCategory[] {
-            FileCategory.Music, FileCategory.Video, FileCategory.Picture, FileCategory.Theme,
+            FileCategory.Music, FileCategory.Video, FileCategory.Picture,
             FileCategory.Doc, FileCategory.Zip, FileCategory.Apk, FileCategory.Other
     };
 
@@ -148,9 +149,6 @@ public class FileCategoryHelper {
     private String buildSelectionByCategory(FileCategory cat) {
         String selection = null;
         switch (cat) {
-            case Theme:
-                selection = FileColumns.DATA + " LIKE '%.mtz'";
-                break;
             case Doc:
                 selection = buildDocSelection();
                 break;
@@ -170,7 +168,6 @@ public class FileCategoryHelper {
         Uri uri;
         String volumeName = "external";
         switch(cat) {
-            case Theme:
             case Doc:
             case Zip:
             case Apk:
@@ -246,7 +243,6 @@ public class FileCategoryHelper {
         refreshMediaCategory(FileCategory.Picture, uri);
 
         uri = Files.getContentUri(volumeName);
-        refreshMediaCategory(FileCategory.Theme, uri);
         refreshMediaCategory(FileCategory.Doc, uri);
         refreshMediaCategory(FileCategory.Zip, uri);
         refreshMediaCategory(FileCategory.Apk, uri);
@@ -289,9 +285,6 @@ public class FileCategoryHelper {
         String ext = path.substring(dotPosition + 1);
         if (ext.equalsIgnoreCase(APK_EXT)) {
             return FileCategory.Apk;
-        }
-        if (ext.equalsIgnoreCase(THEME_EXT)) {
-            return FileCategory.Theme;
         }
 
         if (matchExts(ext, ZIP_EXTS)) {

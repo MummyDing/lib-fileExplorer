@@ -19,7 +19,6 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 
 package org.swiftp;
 
-import net.micode.fileexplorer.FTPServerService;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -130,7 +129,12 @@ public class NormalDataSocketFactory extends DataSocketFactory {
 			return socket;  // will be null if error occurred
 		}
 	}
-	
+
+	@Override
+	public InetAddress getPasvIp() {
+		return null;
+	}
+
 	/**
 	 * Return the port number that the remote client should be informed of (in the body
 	 * of the PASV response).
@@ -142,11 +146,6 @@ public class NormalDataSocketFactory extends DataSocketFactory {
 		} else {
 			return -1;
 		}
-	}
-	
-	public InetAddress getPasvIp() {
-		//String retVal = server.getInetAddress().getHostAddress();
-		return FTPServerService.getWifiIp();
 	}
 	
 	public void reportTraffic(long bytes) {

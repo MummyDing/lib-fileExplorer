@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.adapter;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -30,12 +30,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import net.micode.fileexplorer.FileViewInteractionHub.Mode;
+import net.micode.fileexplorer.FileCategoryActivity;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.FileViewInteractionHub;
+import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
+import net.micode.fileexplorer.fragment.FileViewFragment;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.util.FileIconHelper;
+import net.micode.fileexplorer.util.Util;
 
 public class FileListItem {
     public static void setupFileListItemInfo(Context context, View view,
-            FileInfo fileInfo, FileIconHelper fileIcon,
-            FileViewInteractionHub fileViewInteractionHub) {
+                                             FileInfo fileInfo, FileIconHelper fileIcon,
+                                             FileViewInteractionHub fileViewInteractionHub) {
 
         // if in moving mode, show selected file always
         if (fileViewInteractionHub.isMoveState()) {

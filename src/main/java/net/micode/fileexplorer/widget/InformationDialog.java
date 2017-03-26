@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.widget;
 
 import java.io.File;
 
@@ -30,6 +30,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
+
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.Util;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.util.FileIconHelper;
 
 public class InformationDialog extends AlertDialog {
     protected static final int ID_USER = 100;

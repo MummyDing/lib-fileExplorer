@@ -31,13 +31,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import net.micode.fileexplorer.FTPServerService;
-import net.micode.fileexplorer.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -51,7 +48,6 @@ public class ProxyConnector extends Thread {
 	public static final String PREFERRED_SERVER = "preferred_server"; //preferences
 	public static final int CONNECT_TIMEOUT = 5000;
 	
-	private FTPServerService ftpServerService;
 	private MyLog myLog = new MyLog(getClass().getName());
 	private JSONObject response = null;
 	private Thread responseWaiter = null;
@@ -77,8 +73,7 @@ public class ProxyConnector extends Thread {
 	 * explanation of how proxying works. Hint: it's complicated.
 	 */ 
 	
-	public ProxyConnector(FTPServerService ftpServerService) {
-		this.ftpServerService = ftpServerService;
+	public ProxyConnector() {
 		this.proxyUsage = getPersistedProxyUsage();
 		setProxyState(State.DISCONNECTED);
 		Globals.setProxyConnector(this);
@@ -337,7 +332,6 @@ public class ProxyConnector extends Thread {
 			} else if(action.equals("message")) {
 				proxyMessage = json.getString("text");
 				myLog.i("Got news from proxy server: \"" + proxyMessage + "\"");
-				FTPServerService.updateClients(); // UI update to show message
 			} else if(action.equals("noop")) {
 				myLog.d("Proxy noop");
 			} else {
@@ -361,7 +355,6 @@ public class ProxyConnector extends Thread {
 		SessionThread thread = new SessionThread(socket, dataSocketFactory,
 				SessionThread.Source.PROXY);
 		thread.start();
-		ftpServerService.registerSessionThread(thread);
 	}
 	
 	/**
@@ -728,29 +721,17 @@ public class ProxyConnector extends Thread {
 		return prefs.getLong(USAGE_PREFS_NAME, 0); // Default count of 0
 	}
 	
-	public long getProxyUsage() {
-		// This gets the running total of all proxy usage, which may not have
-		// been persisted yet.
-		return proxyUsage;
-	}
-	
 	void incrementProxyUsage(long num) {
 		long oldProxyUsage = proxyUsage;
 		proxyUsage += num;
 		if(proxyUsage % UPDATE_USAGE_BYTES < oldProxyUsage % UPDATE_USAGE_BYTES) {
-			FTPServerService.updateClients();
 			persistProxyUsage();
 		}
-	}
-	
-	public State getProxyState() {
-		return proxyState;
 	}
 	
 	private void setProxyState(State state) {
 		proxyState = state;
 		myLog.l(Log.DEBUG, "Proxy state changed to " + state, true);
-		FTPServerService.updateClients(); // UI update
 	}
 	
 	static public String stateToString(State s) {

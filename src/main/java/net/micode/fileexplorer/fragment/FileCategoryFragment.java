@@ -1,5 +1,5 @@
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -20,12 +20,22 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import net.micode.fileexplorer.FavoriteDatabaseHelper.FavoriteDatabaseListener;
-import net.micode.fileexplorer.FileCategoryHelper.CategoryInfo;
-import net.micode.fileexplorer.FileCategoryHelper.FileCategory;
+import net.micode.fileexplorer.util.FileCategoryHelper;
+import net.micode.fileexplorer.util.FileCategoryHelper.CategoryInfo;
+import net.micode.fileexplorer.util.FileCategoryHelper.FileCategory;
 import net.micode.fileexplorer.FileCategoryActivity.IBackPressedListener;
-import net.micode.fileexplorer.FileViewInteractionHub.Mode;
-import net.micode.fileexplorer.Util.SDCardInfo;
+import net.micode.fileexplorer.util.FileIconHelper;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.adapter.FileListCursorAdapter;
+import net.micode.fileexplorer.util.FileSortHelper;
+import net.micode.fileexplorer.util.FileViewInteractionHub;
+import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
+import net.micode.fileexplorer.model.GlobalConsts;
+import net.micode.fileexplorer.IFileInteractionListener;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.Util;
+import net.micode.fileexplorer.util.Util.SDCardInfo;
+import net.micode.fileexplorer.widget.CategoryBar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +44,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class FileCategoryFragment extends Fragment implements IFileInteractionListener,
-        FavoriteDatabaseListener, IBackPressedListener {
+        IBackPressedListener {
 
     public static final String EXT_FILETER_KEY = "ext_filter";
 
@@ -56,8 +66,6 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
 
     private ScannerReceiver mScannerReceiver;
 
-    private FavoriteList mFavoriteList;
-
     private ViewPage curViewPage = ViewPage.Invalid;
 
     private ViewPage preViewPage = ViewPage.Invalid;
@@ -65,14 +73,6 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
     private Activity mActivity;
 
     private View mRootView;
-
-//    private FileViewFragment mFileViewActivity;
-
-    private boolean mConfigurationChanged = false;
-
-   /* public void setConfigurationChanged(boolean changed) {
-        mConfigurationChanged = changed;
-    }*/
 
     static {
         button2Category.put(R.id.category_music, FileCategory.Music);
@@ -86,16 +86,12 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mActivity = getActivity();
-      /*  mFileViewActivity = (FileViewFragment) ((FileCategoryActivity) mActivity)
-                .getFragment(Util.SDCARD_TAB_INDEX);*/
         mRootView = inflater.inflate(R.layout.file_explorer_category, container, false);
         curViewPage = ViewPage.Invalid;
         mFileViewInteractionHub = new FileViewInteractionHub(this);
         mFileViewInteractionHub.setMode(Mode.View);
         mFileViewInteractionHub.setRootPath("/");
         mFileIconHelper = new FileIconHelper(mActivity);
-        mFavoriteList = new FavoriteList(mActivity, (ListView) mRootView.findViewById(R.id.favorite_list), this, mFileIconHelper);
-        mFavoriteList.initList();
         mAdapter = new FileListCursorAdapter(mActivity, null, mFileViewInteractionHub, mFileIconHelper);
 
         ListView fileListView = (ListView) mRootView.findViewById(R.id.file_path_list);
@@ -176,7 +172,7 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
     }
 
     public enum ViewPage {
-        Home, Favorite, Category, NoSD, Invalid
+        Home, Category, NoSD, Invalid
     }
 
     private void showPage(ViewPage p) {
@@ -189,21 +185,11 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
         showView(R.id.category_page, false);
         showView(R.id.operation_bar, false);
         showView(R.id.sd_not_available_page, false);
-        mFavoriteList.show(false);
         showEmptyView(false);
 
         switch (p) {
             case Home:
                 showView(R.id.category_page, true);
-               /* if (mConfigurationChanged) {
-                    ((FileCategoryActivity) mActivity).reInstantiateCategoryTab();
-                    mConfigurationChanged = false;
-                }*/
-                break;
-            case Favorite:
-                showView(R.id.navigation_bar, true);
-                mFavoriteList.show(true);
-                showEmptyView(mFavoriteList.getCount() == 0);
                 break;
             case Category:
                 showView(R.id.navigation_bar, true);
@@ -294,7 +280,7 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (curViewPage != ViewPage.Category && curViewPage != ViewPage.Favorite) {
+        if (curViewPage != ViewPage.Category) {
             return;
         }
         mFileViewInteractionHub.onCreateOptionsMenu(menu);
@@ -302,7 +288,7 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (!isHomePage() && mFileCagetoryHelper.getCurCategory() != FileCategory.Favorite) {
+        if (!isHomePage()) {
             mFileViewInteractionHub.onPrepareOptionsMenu(menu);
         }
     }
@@ -336,7 +322,6 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
             @Override
             public void run() {
                 mAdapter.notifyDataSetChanged();
-                mFavoriteList.getArrayAdapter().notifyDataSetChanged();
                 showEmptyView(mAdapter.getCount() == 0);
             }
 
@@ -402,7 +387,7 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
 
     @Override
     public boolean shouldHideMenu(int menu) {
-        return (menu == GlobalConsts.MENU_NEW_FOLDER || menu == GlobalConsts.MENU_FAVORITE
+        return (menu == GlobalConsts.MENU_NEW_FOLDER
                 || menu == GlobalConsts.MENU_PASTE || menu == GlobalConsts.MENU_SHOWHIDE);
     }
 
@@ -552,7 +537,6 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
             // refresh file list
             mFileViewInteractionHub.refreshFileList();
             // refresh file list view in another tab
-//            mFileViewActivity.refresh();
         } else {
             preViewPage = curViewPage;
             showPage(ViewPage.NoSD);
@@ -593,12 +577,6 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
         }
 
     };
-
-    // update the count of favorite
-    @Override
-    public void onFavoriteDatabaseChanged() {
-        setCategoryCount(FileCategory.Favorite, mFavoriteList.getCount());
-    }
 
     @Override
     public void runOnUiThread(Runnable r) {

@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 import java.io.File;
 import java.io.FileInputStream;

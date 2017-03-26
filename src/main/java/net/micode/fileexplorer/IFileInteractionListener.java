@@ -23,6 +23,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.util.FileIconHelper;
+import net.micode.fileexplorer.util.FileSortHelper;
+
 import java.util.Collection;
 
 public interface IFileInteractionListener {

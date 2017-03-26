@@ -19,7 +19,6 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 
 package org.swiftp;
 
-import net.micode.fileexplorer.FTPServerService;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -260,7 +259,6 @@ public class SessionThread extends Thread {
                 String line;
                 line = in.readLine(); // will accept \r\n or \n for terminator
                 if (line != null) {
-                    FTPServerService.writeMonitor(true, line);
                     myLog.l(Log.DEBUG, "Received line from client: " + line);
                     FtpCmd.dispatchCommand(this, line);
                 } else {
@@ -312,7 +310,6 @@ public class SessionThread extends Thread {
     }
 
     public void writeString(String str) {
-        FTPServerService.writeMonitor(false, str);
         byte[] strBytes;
         try {
             strBytes = str.getBytes(encoding);

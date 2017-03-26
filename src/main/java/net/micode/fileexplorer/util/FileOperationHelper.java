@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -27,6 +27,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+
+import net.micode.fileexplorer.model.FileInfo;
 
 public class FileOperationHelper {
     private static final String LOG_TAG = "FileOperation";
@@ -266,7 +268,7 @@ public class FileOperationHelper {
 
             for (File child : file.listFiles(mFilter)) {
                 if (!child.isHidden() && Util.isNormalFile(child.getAbsolutePath())) {
-                    CopyFile(Util.GetFileInfo(child, mFilter, Settings.instance().getShowDotAndHiddenFiles()), destPath);
+                    CopyFile(Util.GetFileInfo(child, mFilter,false), destPath);
                 }
             }
         } else {

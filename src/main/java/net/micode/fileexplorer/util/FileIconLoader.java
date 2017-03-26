@@ -17,13 +17,13 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.micode.fileexplorer.FileCategoryHelper.FileCategory;
+import net.micode.fileexplorer.util.FileCategoryHelper.FileCategory;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;

@@ -17,7 +17,9 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
+
+import net.micode.fileexplorer.model.FileInfo;
 
 import java.util.Comparator;
 import java.util.HashMap;

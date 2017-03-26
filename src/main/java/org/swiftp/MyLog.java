@@ -19,7 +19,6 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 
 package org.swiftp;
 
-import net.micode.fileexplorer.FTPServerService;
 
 import android.util.Log;
 
@@ -40,11 +39,7 @@ public class MyLog {
 			if(level >= Defaults.getConsoleLogLevel()) {
 				Log.println(level,tag, str);
 			}
-			if(!sysOnly) { // some messages only go to the Android log
-				if(level >= Defaults.getUiLogLevel()) {
-					FTPServerService.log(level, str);
-				}
-			}
+
 		}
 	}
 	

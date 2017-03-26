@@ -17,13 +17,9 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -34,6 +30,10 @@ import android.view.ActionMode;
 import android.view.View;
 import android.widget.TextView;
 
+import net.micode.fileexplorer.model.GlobalConsts;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.model.FileInfo;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,7 +41,6 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -261,10 +260,6 @@ public class Util {
     }
 
     public static boolean shouldShowFile(File file) {
-        boolean show = Settings.instance().getShowDotAndHiddenFiles();
-        if (show)
-            return true;
-
         if (file.isHidden())
             return false;
 
@@ -278,16 +273,6 @@ public class Util {
         }
 
         return true;
-    }
-
-    public static ArrayList<FavoriteItem> getDefaultFavorites(Context context) {
-        ArrayList<FavoriteItem> list = new ArrayList<FavoriteItem>();
-        list.add(new FavoriteItem(context.getString(R.string.favorite_photo), makePath(getSdDirectory(), "DCIM/Camera")));
-        list.add(new FavoriteItem(context.getString(R.string.favorite_sdcard), getSdDirectory()));
-        //list.add(new FavoriteItem(context.getString(R.string.favorite_root), getSdDirectory()));
-        list.add(new FavoriteItem(context.getString(R.string.favorite_screen_cap), makePath(getSdDirectory(), "MIUI/screen_cap")));
-        list.add(new FavoriteItem(context.getString(R.string.favorite_ringtone), makePath(getSdDirectory(), "MIUI/ringtone")));
-        return list;
     }
 
     public static boolean setText(View view, int id, String text) {
@@ -373,20 +358,6 @@ public class Util {
 
         return null;
     }
-
-   /* public static void showNotification(Context context, Intent intent, String title, String body, int drawableId) {
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(drawableId, body, System.currentTimeMillis());
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        notification.defaults = Notification.DEFAULT_SOUND;
-        if (intent == null) {
-            // FIXEME: category tab is disabled
-            intent = new Intent(context, FileViewFragment.class);
-        }
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        notification.setLatestEventInfo(context, title, body, contentIntent);
-        manager.notify(drawableId, notification);
-    }*/
 
     public static String formatDateString(Context context, long time) {
         DateFormat dateFormat = android.text.format.DateFormat

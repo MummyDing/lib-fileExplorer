@@ -156,7 +156,33 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- category information -->
+            <LinearLayout android:layout_width="fill_parent"
+                android:orientation="vertical" android:layout_height="wrap_content"
+                android:layout_gravity="bottom" android:background="@drawable/information_bg"
+                android:gravity="center_vertical" android:paddingTop="5dip">
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="20px">
 
+                    <TextView android:id="@+id/sd_card_capacity"
+                        style="@style/InformationTextStyle"
+                        android:drawableLeft="@drawable/sd_card_icon" />
+
+                    <TextView android:id="@+id/sd_card_available"
+                        style="@style/InformationTextStyle"
+                        android:layout_marginLeft="10dip"
+                        android:drawableLeft="@drawable/sd_card_available_icon" />
+                </LinearLayout>
+
+                <net.micode.fileexplorer.widget.CategoryBar
+                    android:id="@+id/category_bar" android:layout_width="fill_parent"
+                    android:layout_height="35px" android:layout_gravity="center"
+                    android:layout_marginBottom="5dip">
+                </net.micode.fileexplorer.widget.CategoryBar>
+            </LinearLayout>
 
             <LinearLayout android:id="@+id/category_buttons"
                 android:layout_width="fill_parent"
@@ -210,16 +236,6 @@
                     android:layout_height="0dip" android:layout_weight="1"
                     android:orientation="horizontal"
                     android:layout_gravity="center">
-                    <LinearLayout android:id="@+id/category_theme"
-                        style="@style/CategoryButtonStyle"
-                        android:background="@drawable/category_button_left">
-                        <ImageView android:src="@drawable/category_icon_theme"
-                            style="@style/CategoryButtonIconStyle" />
-                        <TextView android:text="@string/category_theme"
-                            style="@style/CategoryButtonTextStyle" />
-                        <TextView android:id="@+id/category_theme_count"
-                            style="@style/CategoryButtonCountTextStyle" />
-                    </LinearLayout>
                     <LinearLayout android:id="@+id/category_document"
                         style="@style/CategoryButtonStyle"
                         android:background="@drawable/category_button_middle">
@@ -255,16 +271,6 @@
                         <TextView android:id="@+id/category_apk_count"
                             style="@style/CategoryButtonCountTextStyle" />
                     </LinearLayout>
-                    <LinearLayout android:id="@+id/category_favorite"
-                        style="@style/CategoryButtonStyle"
-                        android:background="@drawable/category_button_middle">
-                        <ImageView android:src="@drawable/category_icon_favorite"
-                            style="@style/CategoryButtonIconStyle" />
-                        <TextView android:text="@string/category_favorite"
-                            style="@style/CategoryButtonTextStyle" />
-                        <TextView android:id="@+id/category_favorite_count"
-                            style="@style/CategoryButtonCountTextStyle" />
-                    </LinearLayout>
                     <LinearLayout
                         style="@style/CategoryButtonStyle"
                         android:background="@drawable/category_button_right">
@@ -272,33 +278,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- category information -->
-            <LinearLayout android:layout_width="fill_parent"
-                android:orientation="vertical" android:layout_height="wrap_content"
-                android:layout_gravity="bottom" android:background="@drawable/information_bg"
-                android:gravity="center_vertical" android:paddingTop="5dip">
-                <LinearLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginLeft="20px">
-
-                    <TextView android:id="@+id/sd_card_capacity"
-                        style="@style/InformationTextStyle"
-                        android:drawableLeft="@drawable/sd_card_icon" />
-
-                    <TextView android:id="@+id/sd_card_available"
-                        style="@style/InformationTextStyle"
-                        android:layout_marginLeft="10dip"
-                        android:drawableLeft="@drawable/sd_card_available_icon" />
-                </LinearLayout>
-
-                <net.micode.fileexplorer.CategoryBar
-                    android:id="@+id/category_bar" android:layout_width="fill_parent"
-                    android:layout_height="35px" android:layout_gravity="center"
-                    android:layout_marginBottom="5dip">
-                </net.micode.fileexplorer.CategoryBar>
-            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 

@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.fragment;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -44,7 +44,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import net.micode.fileexplorer.FileCategoryActivity.IBackPressedListener;
-import net.micode.fileexplorer.FileViewInteractionHub.Mode;
+import net.micode.fileexplorer.util.FileViewInteractionHub;
+import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
+import net.micode.fileexplorer.model.GlobalConsts;
+import net.micode.fileexplorer.IFileInteractionListener;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.Util;
+import net.micode.fileexplorer.adapter.FileListAdapter;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.util.FileCategoryHelper;
+import net.micode.fileexplorer.util.FileIconHelper;
+import net.micode.fileexplorer.util.FileSortHelper;
 
 public class FileViewFragment extends Fragment implements
         IFileInteractionListener, IBackPressedListener {
@@ -152,7 +162,7 @@ public class FileViewFragment extends Fragment implements
         mAdapter = new FileListAdapter(mActivity, R.layout.file_browser_item, mFileNameList, mFileViewInteractionHub,
                 mFileIconHelper);
 
-        boolean baseSd = intent.getBooleanExtra(GlobalConsts.KEY_BASE_SD, !FileExplorerPreferenceActivity.isReadRoot(mActivity));
+        boolean baseSd = intent.getBooleanExtra(GlobalConsts.KEY_BASE_SD, true);
         Log.i(LOG_TAG, "baseSd = " + baseSd);
 
         String rootDir = intent.getStringExtra(ROOT_DIRECTORY);
@@ -165,17 +175,7 @@ public class FileViewFragment extends Fragment implements
         }
         mFileViewInteractionHub.setRootPath(rootDir);
 
-        String currentDir = FileExplorerPreferenceActivity.getPrimaryFolder(mActivity);
         Uri uri = intent.getData();
-        if (uri != null) {
-            if (baseSd && this.sdDir.startsWith(uri.getPath())) {
-                currentDir = this.sdDir;
-            } else {
-                currentDir = uri.getPath();
-            }
-        }
-        mFileViewInteractionHub.setCurrentPath(currentDir);
-        Log.i(LOG_TAG, "CurrentDir = " + currentDir);
 
         mBackspaceExit = (uri != null)
                 && (TextUtils.isEmpty(action)
@@ -291,7 +291,7 @@ public class FileViewFragment extends Fragment implements
             String absolutePath = child.getAbsolutePath();
             if (Util.isNormalFile(absolutePath) && Util.shouldShowFile(absolutePath)) {
                 FileInfo lFileInfo = Util.GetFileInfo(child,
-                        mFileCagetoryHelper.getFilter(), Settings.instance().getShowDotAndHiddenFiles());
+                        mFileCagetoryHelper.getFilter(), false);
                 if (lFileInfo != null) {
                     fileList.add(lFileInfo);
                 }
@@ -376,7 +376,7 @@ public class FileViewFragment extends Fragment implements
     //支持显示真实路径
     @Override
     public String getDisplayPath(String path) {
-        if (path.startsWith(this.sdDir) && !FileExplorerPreferenceActivity.showRealPath(mActivity)) {
+        if (path.startsWith(this.sdDir)) {
             return getString(R.string.sd_folder) + path.substring(this.sdDir.length());
         } else {
             return path;
@@ -407,12 +407,6 @@ public class FileViewFragment extends Fragment implements
         mFileViewInteractionHub.onOperationCopy(files);
     }
 
-    public void refresh() {
-        if (mFileViewInteractionHub != null) {
-            mFileViewInteractionHub.refreshFileList();
-        }
-    }
-
     public void moveToFile(ArrayList<FileInfo> files) {
         mFileViewInteractionHub.moveFileFrom(files);
     }
@@ -422,22 +416,9 @@ public class FileViewFragment extends Fragment implements
         void selected(ArrayList<FileInfo> files);
     }
 
-    public void startSelectFiles(SelectFilesCallback callback) {
-        mFileViewInteractionHub.startSelectFiles(callback);
-    }
-
     @Override
     public FileIconHelper getFileIconHelper() {
         return mFileIconHelper;
-    }
-
-    public boolean setPath(String location) {
-        if (!location.startsWith(mFileViewInteractionHub.getRootPath())) {
-            return false;
-        }
-        mFileViewInteractionHub.setCurrentPath(location);
-        mFileViewInteractionHub.refreshFileList();
-        return true;
     }
 
     @Override

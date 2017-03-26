@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.widget;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,6 +25,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import net.micode.fileexplorer.R;
 
 public class TextInputDialog extends AlertDialog {
     private String mInputText;

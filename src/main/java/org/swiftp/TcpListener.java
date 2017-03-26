@@ -19,7 +19,6 @@ along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
 
 package org.swiftp;
 
-import net.micode.fileexplorer.FTPServerService;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,12 +27,10 @@ import android.util.Log;
 
 public class TcpListener extends Thread {
 	ServerSocket listenSocket;
-	FTPServerService ftpServerService;
 	MyLog myLog = new MyLog(getClass().getName());
 	
-	public TcpListener(ServerSocket listenSocket, FTPServerService ftpServerService) {
+	public TcpListener(ServerSocket listenSocket) {
 		this.listenSocket = listenSocket;
-		this.ftpServerService = ftpServerService;
 	}
 	
 	public void quit() {
@@ -55,7 +52,6 @@ public class TcpListener extends Thread {
 						new NormalDataSocketFactory(), 
 						SessionThread.Source.LOCAL);
 				newSession.start();
-				ftpServerService.registerSessionThread(newSession);
 			}
 		} catch (Exception e) {
 			myLog.l(Log.DEBUG, "Exception in TcpListener");

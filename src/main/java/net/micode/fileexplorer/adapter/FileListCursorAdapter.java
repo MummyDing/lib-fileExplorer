@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -25,6 +25,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+
+import net.micode.fileexplorer.util.FileIconHelper;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.util.FileViewInteractionHub;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.Util;
+import net.micode.fileexplorer.util.FileCategoryHelper;
 
 import java.util.Collection;
 import java.util.HashMap;

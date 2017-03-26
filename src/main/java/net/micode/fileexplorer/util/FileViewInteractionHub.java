@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,13 +54,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import net.micode.fileexplorer.FileListItem.ModeCallback;
-import net.micode.fileexplorer.FileOperationHelper.IOperationProgressListener;
-import net.micode.fileexplorer.FileSortHelper.SortMethod;
-import net.micode.fileexplorer.FileViewFragment.SelectFilesCallback;
-import net.micode.fileexplorer.TextInputDialog.OnFinishListener;
+import net.micode.fileexplorer.FileCategoryActivity;
+import net.micode.fileexplorer.adapter.FileListItem.ModeCallback;
+import net.micode.fileexplorer.model.GlobalConsts;
+import net.micode.fileexplorer.IFileInteractionListener;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.FileOperationHelper.IOperationProgressListener;
+import net.micode.fileexplorer.util.FileSortHelper.SortMethod;
+import net.micode.fileexplorer.fragment.FileViewFragment.SelectFilesCallback;
+import net.micode.fileexplorer.widget.TextInputDialog;
+import net.micode.fileexplorer.widget.TextInputDialog.OnFinishListener;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.widget.InformationDialog;
 
 public class FileViewInteractionHub implements IOperationProgressListener {
     private static final String LOG_TAG = "FileViewInteractionHub";
@@ -237,45 +243,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         refreshFileList();
     }
 
-    private void onOperationFavorite() {
-        String path = mCurrentPath;
-
-        if (mListViewContextMenuSelectedItem != -1) {
-            path = mFileViewListener.getItem(mListViewContextMenuSelectedItem).filePath;
-        }
-
-        onOperationFavorite(path);
-    }
-
-    private void onOperationSetting() {
-        Intent intent = new Intent(mContext, FileExplorerPreferenceActivity.class);
-        if (intent != null) {
-            try {
-                mContext.startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Log.e(LOG_TAG, "fail to start setting: " + e.toString());
-            }
-        }
-    }
-
-    private void onOperationFavorite(String path) {
-        FavoriteDatabaseHelper databaseHelper = FavoriteDatabaseHelper.getInstance();
-        if (databaseHelper != null) {
-            int stringId = 0;
-            if (databaseHelper.isFavorite(path)) {
-                databaseHelper.delete(path);
-                stringId = R.string.removed_favorite;
-            } else {
-                databaseHelper.insert(Util.getNameFromFilepath(path), path);
-                stringId = R.string.added_favorite;
-            }
-
-            Toast.makeText(mContext, stringId, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void onOperationShowSysFiles() {
-        Settings.instance().setShowDotAndHiddenFiles(!Settings.instance().getShowDotAndHiddenFiles());
         refreshFileList();
     }
 
@@ -671,14 +639,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
             AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 
-            FavoriteDatabaseHelper databaseHelper = FavoriteDatabaseHelper.getInstance();
-            FileInfo file = mFileViewListener.getItem(info.position);
-            if (databaseHelper != null && file != null) {
-                int stringId = databaseHelper.isFavorite(file.filePath) ? R.string.operation_unfavorite
-                        : R.string.operation_favorite;
-                addMenuItem(menu, GlobalConsts.MENU_FAVORITE, 0, stringId);
-            }
-
             addMenuItem(menu, GlobalConsts.MENU_COPY, 0, R.string.operation_copy);
             addMenuItem(menu, GlobalConsts.MENU_COPY_PATH, 0, R.string.operation_copy_path);
              addMenuItem(menu, GlobalConsts.MENU_PASTE, 0,
@@ -774,12 +734,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
                 case GlobalConsts.MENU_SHOWHIDE:
                     onOperationShowSysFiles();
                     break;
-                case GlobalConsts.MENU_FAVORITE:
-                    onOperationFavorite();
-                    break;
-                case MENU_SETTING:
-                    onOperationSetting();
-                    break;
                 case MENU_EXIT:
                     ((FileCategoryActivity) mContext).finish();
                     break;
@@ -835,7 +789,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     };
 
-    private net.micode.fileexplorer.FileViewInteractionHub.Mode mCurrentMode;
+    private FileViewInteractionHub.Mode mCurrentMode;
 
     private String mCurrentPath;
 
@@ -866,8 +820,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
          R.string.operation_paste);
         addMenuItem(menu, GlobalConsts.MENU_NEW_FOLDER, 3, R.string.operation_create_folder,
                 R.drawable.ic_menu_new_folder);
-        addMenuItem(menu, GlobalConsts.MENU_FAVORITE, 4, R.string.operation_favorite,
-                R.drawable.ic_menu_delete_favorite);
         addMenuItem(menu, GlobalConsts.MENU_SHOWHIDE, 5, R.string.operation_show_sys,
                 R.drawable.ic_menu_show_sys);
         addMenuItem(menu, MENU_REFRESH, 6, R.string.operation_refresh,
@@ -899,21 +851,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         menu.findItem(MENU_SELECTALL).setTitle(
                 isSelectedAll() ? R.string.operation_cancel_selectall : R.string.operation_selectall);
         menu.findItem(MENU_SELECTALL).setEnabled(mCurrentMode != Mode.Pick);
-
-        MenuItem menuItem = menu.findItem(GlobalConsts.MENU_SHOWHIDE);
-        if (menuItem != null) {
-            menuItem.setTitle(Settings.instance().getShowDotAndHiddenFiles() ? R.string.operation_hide_sys
-                    : R.string.operation_show_sys);
-        }
-
-        FavoriteDatabaseHelper databaseHelper = FavoriteDatabaseHelper.getInstance();
-        if (databaseHelper != null) {
-            MenuItem item = menu.findItem(GlobalConsts.MENU_FAVORITE);
-            if (item != null) {
-                item.setTitle(databaseHelper.isFavorite(mCurrentPath) ? R.string.operation_unfavorite
-                        : R.string.operation_favorite);
-            }
-        }
 
     }
 

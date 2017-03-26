@@ -24,10 +24,10 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.ActionMode;
 
+import net.micode.fileexplorer.fragment.FileCategoryFragment;
+import net.micode.fileexplorer.fragment.FileViewFragment;
+
 public class FileCategoryActivity extends Activity {
-    private static final String INSTANCESTATE_TAB = "tab";
-    private static final int DEFAULT_OFFSCREEN_PAGES = 2;
-    private static final int MSG_UPDATE_UI = 1;
     ActionMode mActionMode;
     private FileCategoryFragment mFileCategoryFragment;
     private FileViewFragment mFileViewFragment;
@@ -51,6 +51,7 @@ public class FileCategoryActivity extends Activity {
     public interface IBackPressedListener {
         /**
          * 处理back事件。
+         *
          * @return True: 表示已经处理; False: 没有处理，让基类处理。
          */
         boolean onBack();

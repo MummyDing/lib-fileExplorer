@@ -17,11 +17,13 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 
-import net.micode.fileexplorer.FileCategoryHelper.FileCategory;
-import net.micode.fileexplorer.FileIconLoader.IconLoadFinishListener;
+import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.util.FileCategoryHelper.FileCategory;
+import net.micode.fileexplorer.util.FileIconLoader.IconLoadFinishListener;
 
 import android.content.Context;
 import android.view.View;

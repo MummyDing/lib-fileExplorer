@@ -17,7 +17,7 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +28,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.model.FileInfo;
 
 public class IntentBuilder {
 

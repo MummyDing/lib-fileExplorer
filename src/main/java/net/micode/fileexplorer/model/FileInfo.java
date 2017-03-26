@@ -17,29 +17,30 @@
  * along with SwiFTP.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.micode.fileexplorer;
+package net.micode.fileexplorer.model;
 
-public class Settings {
-    // whether show system and cache images, default not
-    private boolean mShowDotAndHiddenFiles;
-    private static Settings mInstance;
+public class FileInfo {
 
-    private Settings() {
+    public String fileName;
 
-    }
+    public String filePath;
 
-    public static Settings instance() {
-        if(mInstance == null) {
-            mInstance = new Settings();
-        }
-        return mInstance;
-    }
+    public long fileSize;
 
-    public boolean getShowDotAndHiddenFiles() {
-        return mShowDotAndHiddenFiles;
-    }
+    public boolean IsDir;
 
-    public void setShowDotAndHiddenFiles(boolean s) {
-        mShowDotAndHiddenFiles = s;
-    }
+    public int Count;
+
+    public long ModifiedDate;
+
+    public boolean Selected;
+
+    public boolean canRead;
+
+    public boolean canWrite;
+
+    public boolean isHidden;
+
+    public long dbId; // id in the database, if is from database
+
 }
