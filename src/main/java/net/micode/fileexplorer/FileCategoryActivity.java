@@ -22,6 +22,7 @@ package net.micode.fileexplorer;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.app.FragmentTransaction;
 import android.view.ActionMode;
 
 import net.micode.fileexplorer.fragment.FileCategoryFragment;
@@ -38,6 +39,9 @@ public class FileCategoryActivity extends Activity {
         setContentView(R.layout.fragment_pager);
         mFileViewFragment = new FileViewFragment();
         mFileCategoryFragment = new FileCategoryFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.frame_layout, mFileCategoryFragment);
+        ft.commitAllowingStateLoss();
     }
 
     @Override

@@ -65,28 +65,47 @@
     </style>
 
     <style name="CategoryButtonStyle">
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    <style name="CategoryCardViewStyle"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_margin">5dp</item>
+        <!--<item name="card_view:cardCornerRadius">4dp</item>
+        <item name="card_view:cardElevation">4dp</item>-->
     </style>
     <style name="CategoryButtonIconStyle">
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">30dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_marginBottom">3px</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+    <style name="CategoryCardViewDescriptionStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">40dp</item>
     </style>
     <style name="CategoryButtonTextStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">19px</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">#111111</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:ellipsize">marquee</item>
     </style>
     <style name="CategoryButtonCountTextStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">15px</item>
-        <item name="android:textColor">#A6A6A6</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:ellipsize">marquee</item>
     </style>
 
     <style name="InformationItemTitleStyle">

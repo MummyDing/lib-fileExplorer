@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +75,8 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
 
     private View mRootView;
 
+    private View mLoadingView;
+
     static {
         button2Category.put(R.id.category_music, FileCategory.Music);
         button2Category.put(R.id.category_video, FileCategory.Video);
@@ -82,6 +85,8 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
         button2Category.put(R.id.category_zip, FileCategory.Zip);
         button2Category.put(R.id.category_apk, FileCategory.Apk);
     }
+
+    private ListView mFileListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,17 +97,26 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
         mFileViewInteractionHub.setMode(Mode.View);
         mFileViewInteractionHub.setRootPath("/");
         mFileIconHelper = new FileIconHelper(mActivity);
-        mAdapter = new FileListCursorAdapter(mActivity, null, mFileViewInteractionHub, mFileIconHelper);
-
-        ListView fileListView = (ListView) mRootView.findViewById(R.id.file_path_list);
-        fileListView.setAdapter(mAdapter);
-
-        setupClick();
-        setupCategoryInfo();
-        updateUI();
+        mLoadingView = mRootView.findViewById(R.id.loading_view);
         registerScannerReceiver();
-
         return mRootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter = new FileListCursorAdapter(mActivity, null, mFileViewInteractionHub, mFileIconHelper);
+                mFileListView = (ListView) mRootView.findViewById(R.id.file_path_list);
+                mFileListView.setAdapter(mAdapter);
+                setupClick();
+                setupCategoryInfo();
+                updateUI();
+                mLoadingView.setVisibility(View.GONE);
+            }
+        }, 1000);
     }
 
     private void registerScannerReceiver() {

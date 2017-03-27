@@ -83,14 +83,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     private ProgressDialog progressDialog;
 
-    private View mNavigationBar;
-
-    private TextView mNavigationBarText;
-
-    private View mDropdownNavigation;
-
-    private ImageView mNavigationBarUpDownArrow;
-
     private Context mContext;
 
     public enum Mode {
@@ -178,21 +170,9 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     private void setup() {
-        setupNaivgationBar();
+//        setupNaivgationBar();
         setupFileListView();
         setupOperationPane();
-    }
-
-    private void setupNaivgationBar() {
-        mNavigationBar = mFileViewListener.getViewById(R.id.navigation_bar);
-        mNavigationBarText = (TextView) mFileViewListener.getViewById(R.id.current_path_view);
-        mNavigationBarUpDownArrow = (ImageView) mFileViewListener.getViewById(R.id.path_pane_arrow);
-        View clickable = mFileViewListener.getViewById(R.id.current_path_pane);
-        clickable.setOnClickListener(buttonClick);
-
-        mDropdownNavigation = mFileViewListener.getViewById(R.id.dropdown_navigation);
-
-        setupClick(mNavigationBar, R.id.path_pane_up_level);
     }
 
     // buttons
@@ -222,8 +202,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
                 onOperationDelete();
             } else if (id == R.id.button_operation_cancel) {
                 onOperationSelectAllOrCancel();
-            } else if (id == R.id.current_path_pane) {
-                onNavigationBarClick();
             } else if (id == R.id.button_moving_confirm) {
                 onOperationButtonConfirm();
             } else if (id == R.id.button_moving_cancel) {
@@ -291,47 +269,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     };
 
-    protected void onNavigationBarClick() {
-        if (mDropdownNavigation.getVisibility() == View.VISIBLE) {
-            showDropdownNavigation(false);
-        } else {
-            LinearLayout list = (LinearLayout) mDropdownNavigation.findViewById(R.id.dropdown_navigation_list);
-            list.removeAllViews();
-            int pos = 0;
-            String displayPath = mFileViewListener.getDisplayPath(mCurrentPath);
-            boolean root = true;
-            int left = 0;
-            while (pos != -1 && !displayPath.equals("/")) {//如果当前位置在根文件夹则不显示导航条
-                int end = displayPath.indexOf("/", pos);
-                if (end == -1)
-                    break;
-
-                View listItem = LayoutInflater.from(mContext).inflate(R.layout.dropdown_item,
-                        null);
-
-                View listContent = listItem.findViewById(R.id.list_item);
-                listContent.setPadding(left, 0, 0, 0);
-                left += 20;
-                ImageView img = (ImageView) listItem.findViewById(R.id.item_icon);
-
-                img.setImageResource(root ? R.drawable.dropdown_icon_root : R.drawable.dropdown_icon_folder);
-                root = false;
-
-                TextView text = (TextView) listItem.findViewById(R.id.path_name);
-                String substring = displayPath.substring(pos, end);
-                if(substring.isEmpty())substring = "/";
-                text.setText(substring);
-
-                listItem.setOnClickListener(navigationClick);
-                listItem.setTag(mFileViewListener.getRealPath(displayPath.substring(0, end)));
-                pos = end + 1;
-                list.addView(listItem);
-            }
-            if (list.getChildCount() > 0)
-                showDropdownNavigation(true);
-
-        }
-    }
 
     public boolean onOperationUpLevel() {
         showDropdownNavigation(false);
@@ -435,7 +372,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     public void refreshFileList() {
         clearSelection();
-        updateNavigationPane();
+//        updateNavigationPane();
 
         // onRefreshFileList returns true indicates list has changed
         mFileViewListener.onRefreshFileList(mCurrentPath, mFileSortHelper);
@@ -459,16 +396,6 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         }
 
         confirmButton.setText(text);
-    }
-
-    private void updateNavigationPane() {
-        View upLevel = mFileViewListener.getViewById(R.id.path_pane_up_level);
-        upLevel.setVisibility(mRoot.equals(mCurrentPath) ? View.INVISIBLE : View.VISIBLE);
-
-        View arrow = mFileViewListener.getViewById(R.id.path_pane_arrow);
-        arrow.setVisibility(mRoot.equals(mCurrentPath) ? View.GONE : View.VISIBLE);
-
-        mNavigationBarText.setText(mFileViewListener.getDisplayPath(mCurrentPath));
     }
 
     public void onOperationSend() {
@@ -868,7 +795,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     public void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         FileInfo lFileInfo = mFileViewListener.getItem(position);
-        showDropdownNavigation(false);
+//        showDropdownNavigation(false);
 
         if (lFileInfo == null) {
             Log.e(LOG_TAG, "file does not exist on position:" + position);
@@ -984,9 +911,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     public boolean onBackPressed() {
-        if (mDropdownNavigation.getVisibility() == View.VISIBLE) {
-            mDropdownNavigation.setVisibility(View.GONE);
-        } else if (isInSelection()) {
+        if (isInSelection()) {
             clearSelection();
         } else if (!onOperationUpLevel()) {
             return false;
@@ -1007,10 +932,10 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     private void showDropdownNavigation(boolean show) {
-        mDropdownNavigation.setVisibility(show ? View.VISIBLE : View.GONE);
+       /* mDropdownNavigation.setVisibility(show ? View.VISIBLE : View.GONE);
         mNavigationBarUpDownArrow
                 .setImageResource(mDropdownNavigation.getVisibility() == View.VISIBLE ? R.drawable.arrow_up
-                        : R.drawable.arrow_down);
+                        : R.drawable.arrow_down);*/
     }
 
     @Override
