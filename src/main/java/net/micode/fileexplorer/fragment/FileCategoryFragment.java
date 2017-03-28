@@ -2,7 +2,6 @@
 package net.micode.fileexplorer.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,10 +20,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.mummyding.ymbase.base.BaseFragment;
+
+import net.micode.fileexplorer.FileManagerActivity;
 import net.micode.fileexplorer.util.FileCategoryHelper;
 import net.micode.fileexplorer.util.FileCategoryHelper.CategoryInfo;
 import net.micode.fileexplorer.util.FileCategoryHelper.FileCategory;
-import net.micode.fileexplorer.FileCategoryActivity.IBackPressedListener;
+import net.micode.fileexplorer.FileManagerActivity.IBackPressedListener;
 import net.micode.fileexplorer.util.FileIconHelper;
 import net.micode.fileexplorer.model.FileInfo;
 import net.micode.fileexplorer.adapter.FileListCursorAdapter;
@@ -44,7 +46,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FileCategoryFragment extends Fragment implements IFileInteractionListener,
+public class FileCategoryFragment extends BaseFragment implements IFileInteractionListener,
         IBackPressedListener {
 
     public static final String EXT_FILETER_KEY = "ext_filter";
@@ -87,10 +89,13 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
     }
 
     private ListView mFileListView;
+    private FileViewFragment mFileViewFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mActivity = getActivity();
+        mFileViewFragment = (FileViewFragment) ((FileManagerActivity) mActivity)
+                .getFragment(Util.SDCARD_TAB_INDEX);
         mRootView = inflater.inflate(R.layout.file_explorer_category, container, false);
         curViewPage = ViewPage.Invalid;
         mFileViewInteractionHub = new FileViewInteractionHub(this);
@@ -116,7 +121,7 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
                 updateUI();
                 mLoadingView.setVisibility(View.GONE);
             }
-        }, 1000);
+        }, 500);
     }
 
     private void registerScannerReceiver() {
@@ -436,13 +441,13 @@ public class FileCategoryFragment extends Fragment implements IFileInteractionLi
 
     private void copyFileInFileView(ArrayList<FileInfo> files) {
         if (files.size() == 0) return;
-//        mFileViewActivity.copyFile(files);
+        mFileViewFragment.copyFile(files);
         mActivity.getActionBar().setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
     }
 
     private void startMoveToFileView(ArrayList<FileInfo> files) {
         if (files.size() == 0) return;
-//        mFileViewActivity.moveToFile(files);
+        mFileViewFragment.moveToFile(files);
         mActivity.getActionBar().setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
     }
 

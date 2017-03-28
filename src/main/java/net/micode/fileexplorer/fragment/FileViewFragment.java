@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -43,7 +42,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import net.micode.fileexplorer.FileCategoryActivity.IBackPressedListener;
+import com.github.mummyding.ymbase.base.BaseFragment;
+
+import net.micode.fileexplorer.FileManagerActivity.IBackPressedListener;
 import net.micode.fileexplorer.util.FileViewInteractionHub;
 import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
 import net.micode.fileexplorer.model.GlobalConsts;
@@ -56,7 +57,7 @@ import net.micode.fileexplorer.util.FileCategoryHelper;
 import net.micode.fileexplorer.util.FileIconHelper;
 import net.micode.fileexplorer.util.FileSortHelper;
 
-public class FileViewFragment extends Fragment implements
+public class FileViewFragment extends BaseFragment implements
         IFileInteractionListener, IBackPressedListener {
 
     public static final String EXT_FILTER_KEY = "ext_filter";

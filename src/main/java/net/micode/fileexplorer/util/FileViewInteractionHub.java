@@ -32,13 +32,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -51,11 +49,9 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import net.micode.fileexplorer.FileCategoryActivity;
+import net.micode.fileexplorer.FileManagerActivity;
 import net.micode.fileexplorer.adapter.FileListItem.ModeCallback;
 import net.micode.fileexplorer.model.GlobalConsts;
 import net.micode.fileexplorer.IFileInteractionListener;
@@ -208,7 +204,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
                 onOperationButtonCancel();
             } else if (id == R.id.path_pane_up_level) {
                 onOperationUpLevel();
-                ActionMode mode = ((FileCategoryActivity) mContext).getActionMode();
+                ActionMode mode = ((FileManagerActivity) mContext).getActionMode();
                 if (mode != null) {
                     mode.finish();
                 }
@@ -239,11 +235,11 @@ public class FileViewInteractionHub implements IOperationProgressListener {
             f.Selected = true;
             mCheckedFileNameList.add(f);
         }
-        FileCategoryActivity fileCategoryActivity = (FileCategoryActivity) mContext;
-        ActionMode mode = fileCategoryActivity.getActionMode();
+        FileManagerActivity fileManagerActivity = (FileManagerActivity) mContext;
+        ActionMode mode = fileManagerActivity.getActionMode();
         if (mode == null) {
-            mode = fileCategoryActivity.startActionMode(new ModeCallback(mContext, this));
-            fileCategoryActivity.setActionMode(mode);
+            mode = fileManagerActivity.startActionMode(new ModeCallback(mContext, this));
+            fileManagerActivity.setActionMode(mode);
             Util.updateActionModeTitle(mode, mContext, getSelectedFileList().size());
         }
         mFileViewListener.onDataChanged();
@@ -464,7 +460,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
             return;
         final File f = new File(path);
         final Intent intent;
-        if (f.isDirectory()) {
+      /*  if (f.isDirectory()) {
             intent = new Intent(Intent.ACTION_MEDIA_MOUNTED);
             intent.setClassName("com.android.providers.media", "com.android.providers.media.MediaScannerReceiver");
             intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
@@ -473,7 +469,11 @@ public class FileViewInteractionHub implements IOperationProgressListener {
             intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             intent.setData(Uri.fromFile(new File(path)));
             Log.v(LOG_TAG, "file changed, send broadcast:" + intent.toString());
-        }
+        }*/
+        intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(new File(path)));
+        Log.v(LOG_TAG, "file changed, send broadcast:" + intent.toString());
+
         mContext.sendBroadcast(intent);
     }
 
@@ -662,7 +662,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
                     onOperationShowSysFiles();
                     break;
                 case MENU_EXIT:
-                    ((FileCategoryActivity) mContext).finish();
+                    ((FileManagerActivity) mContext).finish();
                     break;
                 // sort
                 case MENU_SORT_NAME:
@@ -804,7 +804,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
         if (isInSelection()) {
             boolean selected = lFileInfo.Selected;
-            ActionMode actionMode = ((FileCategoryActivity) mContext).getActionMode();
+            ActionMode actionMode = ((FileManagerActivity) mContext).getActionMode();
             ImageView checkBox = (ImageView) view.findViewById(R.id.file_checkbox);
             if (selected) {
                 mCheckedFileNameList.remove(lFileInfo);
@@ -833,7 +833,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         }
 
         mCurrentPath = getAbsoluteName(mCurrentPath, lFileInfo.fileName);
-        ActionMode actionMode = ((FileCategoryActivity) mContext).getActionMode();
+        ActionMode actionMode = ((FileManagerActivity) mContext).getActionMode();
         if (actionMode != null) {
             actionMode.finish();
         }

@@ -165,12 +165,17 @@ public class FileOperationHelper {
                 synchronized(mCurFileNameList) {
                     _r.run();
                 }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
                 if (mOperationListener != null) {
                     mOperationListener.onFinish();
                 }
-
-                return null;
             }
+
         }.execute();
     }
 

@@ -19,16 +19,17 @@
 
 package net.micode.fileexplorer;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ActionMode;
+
+import com.github.mummyding.ymbase.base.BaseSwipeBackActivity;
 
 import net.micode.fileexplorer.fragment.FileCategoryFragment;
 import net.micode.fileexplorer.fragment.FileViewFragment;
 
-public class FileCategoryActivity extends Activity {
+public class FileManagerActivity extends BaseSwipeBackActivity {
     ActionMode mActionMode;
     private FileCategoryFragment mFileCategoryFragment;
     private FileViewFragment mFileViewFragment;
@@ -37,9 +38,11 @@ public class FileCategoryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         mFileViewFragment = new FileViewFragment();
         mFileCategoryFragment = new FileCategoryFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frame_layout, mFileCategoryFragment);
         ft.commitAllowingStateLoss();
     }

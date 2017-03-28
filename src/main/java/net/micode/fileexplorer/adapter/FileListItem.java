@@ -30,7 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import net.micode.fileexplorer.FileCategoryActivity;
+import net.micode.fileexplorer.FileManagerActivity;
 import net.micode.fileexplorer.R;
 import net.micode.fileexplorer.util.FileViewInteractionHub;
 import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
@@ -93,12 +93,12 @@ public class FileListItem {
 
             FileInfo tag = (FileInfo) img.getTag();
             tag.Selected = !tag.Selected;
-            ActionMode actionMode = ((FileCategoryActivity) mContext).getActionMode();
+            ActionMode actionMode = ((FileManagerActivity) mContext).getActionMode();
             if (actionMode == null) {
-                actionMode = ((FileCategoryActivity) mContext)
+                actionMode = ((FileManagerActivity) mContext)
                         .startActionMode(new ModeCallback(mContext,
                                 mFileViewInteractionHub));
-                ((FileCategoryActivity) mContext).setActionMode(actionMode);
+                ((FileManagerActivity) mContext).setActionMode(actionMode);
             } else {
                 actionMode.invalidate();
             }
@@ -125,7 +125,7 @@ public class FileListItem {
         }
 
         private void scrollToSDcardTab() {
-            ActionBar bar = ((FileCategoryActivity) mContext).getActionBar();
+            ActionBar bar = ((FileManagerActivity) mContext).getActionBar();
             if (bar.getSelectedNavigationIndex() != Util.SDCARD_TAB_INDEX) {
                 bar.setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
             }
@@ -165,13 +165,13 @@ public class FileListItem {
                 mFileViewInteractionHub.onOperationDelete();
                 mode.finish();
             } else if(id == R.id.action_copy) {
-                ((FileViewFragment) ((FileCategoryActivity) mContext)
+                ((FileViewFragment) ((FileManagerActivity) mContext)
                         .getFragment(Util.SDCARD_TAB_INDEX))
                         .copyFile(mFileViewInteractionHub.getSelectedFileList());
                 mode.finish();
                 scrollToSDcardTab();
             } else if (id == R.id.action_move) {
-                ((FileViewFragment) ((FileCategoryActivity) mContext)
+                ((FileViewFragment) ((FileManagerActivity) mContext)
                         .getFragment(Util.SDCARD_TAB_INDEX))
                         .moveToFile(mFileViewInteractionHub.getSelectedFileList());
                 mode.finish();
@@ -199,7 +199,7 @@ public class FileListItem {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mFileViewInteractionHub.clearSelection();
-            ((FileCategoryActivity) mContext).setActionMode(null);
+            ((FileManagerActivity) mContext).setActionMode(null);
         }
     }
 }
