@@ -23,6 +23,7 @@
                 android:layout_height="match_parent"
                 android:footerDividersEnabled="true"
                 android:headerDividersEnabled="true"
+                android:divider="@null"
                 android:visibility="gone" />
 
             <ListView

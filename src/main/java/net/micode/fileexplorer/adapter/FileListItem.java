@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import net.micode.fileexplorer.FileManagerActivity;
 import net.micode.fileexplorer.R;
@@ -49,13 +50,12 @@ public class FileListItem {
             fileInfoModel.Selected = fileViewInteractionHub.isFileSelected(fileInfoModel.filePath);
         }
 
-        ImageView checkbox = (ImageView) view.findViewById(R.id.file_checkbox);
+        RadioButton checkbox = (RadioButton) view.findViewById(R.id.file_checkbox);
         if (fileViewInteractionHub.getMode() == Mode.Pick) {
             checkbox.setVisibility(View.GONE);
         } else {
             checkbox.setVisibility(fileViewInteractionHub.canShowCheckBox() ? View.VISIBLE : View.GONE);
-            checkbox.setImageResource(fileInfoModel.Selected ? R.drawable.btn_check_on_holo_light
-                    : R.drawable.btn_check_off_holo_light);
+            checkbox.setChecked(fileInfoModel.Selected);
             checkbox.setTag(fileInfoModel);
             view.setSelected(fileInfoModel.Selected);
         }
@@ -88,7 +88,7 @@ public class FileListItem {
 
         @Override
         public void onClick(View v) {
-            ImageView img = (ImageView) v.findViewById(R.id.file_checkbox);
+            RadioButton img = (RadioButton) v.findViewById(R.id.file_checkbox);
             assert (img != null && img.getTag() != null);
 
             FileInfoModel tag = (FileInfoModel) img.getTag();
@@ -103,8 +103,7 @@ public class FileListItem {
                 actionMode.invalidate();
             }
             if (mFileViewInteractionHub.onCheckItem(tag, v)) {
-                img.setImageResource(tag.Selected ? R.drawable.btn_check_on_holo_light
-                        : R.drawable.btn_check_off_holo_light);
+                img.setChecked(tag.Selected);
             } else {
                 tag.Selected = !tag.Selected;
             }
