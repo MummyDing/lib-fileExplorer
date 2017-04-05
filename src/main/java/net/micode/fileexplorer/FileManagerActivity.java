@@ -26,30 +26,30 @@ import android.view.ActionMode;
 
 import com.github.mummyding.ymbase.base.BaseSwipeBackActivity;
 
-import net.micode.fileexplorer.fragment.FileCategoryFragment;
-import net.micode.fileexplorer.fragment.FileViewFragment;
+import net.micode.fileexplorer.fragment.FileHomeFragment;
+import net.micode.fileexplorer.fragment.FileListFragment;
 
 public class FileManagerActivity extends BaseSwipeBackActivity {
     ActionMode mActionMode;
-    private FileCategoryFragment mFileCategoryFragment;
-    private FileViewFragment mFileViewFragment;
+    private FileHomeFragment mFileHomeFragment;
+    private FileListFragment mFileListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        mFileViewFragment = new FileViewFragment();
-        mFileCategoryFragment = new FileCategoryFragment();
+        getActionBar().setLogo(getResources().getDrawable(R.drawable.transparent));
+        mFileListFragment = new FileListFragment();
+        mFileHomeFragment = new FileHomeFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frame_layout, mFileCategoryFragment);
+        ft.replace(R.id.frame_layout, mFileHomeFragment);
         ft.commitAllowingStateLoss();
     }
 
     @Override
     public void onBackPressed() {
-        IBackPressedListener backPressedListener = mFileCategoryFragment;
+        IBackPressedListener backPressedListener = mFileHomeFragment;
         if (!backPressedListener.onBack()) {
             super.onBackPressed();
         }
@@ -74,9 +74,9 @@ public class FileManagerActivity extends BaseSwipeBackActivity {
 
     public Fragment getFragment(int tabIndex) {
         if (tabIndex == 0) {
-            return mFileCategoryFragment;
+            return mFileHomeFragment;
         } else {
-            return mFileViewFragment;
+            return mFileListFragment;
         }
     }
 }

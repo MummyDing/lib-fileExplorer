@@ -28,12 +28,12 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.model.FileInfoModel;
 
 public class FileOperationHelper {
     private static final String LOG_TAG = "FileOperation";
 
-    private ArrayList<FileInfo> mCurFileNameList = new ArrayList<FileInfo>();
+    private ArrayList<FileInfoModel> mCurFileNameList = new ArrayList<FileInfoModel>();
 
     private boolean mMoving;
 
@@ -65,7 +65,7 @@ public class FileOperationHelper {
         return f.mkdir();
     }
 
-    public void Copy(ArrayList<FileInfo> files) {
+    public void Copy(ArrayList<FileInfoModel> files) {
         copyFileList(files);
     }
 
@@ -77,7 +77,7 @@ public class FileOperationHelper {
         asnycExecute(new Runnable() {
             @Override
             public void run() {
-                for (FileInfo f : mCurFileNameList) {
+                for (FileInfoModel f : mCurFileNameList) {
                     CopyFile(f, _path);
                 }
 
@@ -96,7 +96,7 @@ public class FileOperationHelper {
         return mCurFileNameList.size() != 0;
     }
 
-    public void StartMove(ArrayList<FileInfo> files) {
+    public void StartMove(ArrayList<FileInfoModel> files) {
         if (mMoving)
             return;
 
@@ -109,7 +109,7 @@ public class FileOperationHelper {
     }
 
     public boolean canMove(String path) {
-        for (FileInfo f : mCurFileNameList) {
+        for (FileInfoModel f : mCurFileNameList) {
             if (!f.IsDir)
                 continue;
 
@@ -138,7 +138,7 @@ public class FileOperationHelper {
         asnycExecute(new Runnable() {
             @Override
             public void run() {
-                    for (FileInfo f : mCurFileNameList) {
+                    for (FileInfoModel f : mCurFileNameList) {
                         MoveFile(f, _path);
                     }
 
@@ -153,7 +153,7 @@ public class FileOperationHelper {
         return true;
     }
 
-    public ArrayList<FileInfo> getFileList() {
+    public ArrayList<FileInfoModel> getFileList() {
         return mCurFileNameList;
     }
 
@@ -181,7 +181,7 @@ public class FileOperationHelper {
 
     public boolean isFileSelected(String path) {
         synchronized(mCurFileNameList) {
-            for (FileInfo f : mCurFileNameList) {
+            for (FileInfoModel f : mCurFileNameList) {
                 if (f.filePath.equalsIgnoreCase(path))
                     return true;
             }
@@ -189,7 +189,7 @@ public class FileOperationHelper {
         return false;
     }
 
-    public boolean Rename(FileInfo f, String newName) {
+    public boolean Rename(FileInfoModel f, String newName) {
         if (f == null || newName == null) {
             Log.e(LOG_TAG, "Rename: null parameter");
             return false;
@@ -213,12 +213,12 @@ public class FileOperationHelper {
         return false;
     }
 
-    public boolean Delete(ArrayList<FileInfo> files) {
+    public boolean Delete(ArrayList<FileInfoModel> files) {
         copyFileList(files);
         asnycExecute(new Runnable() {
             @Override
             public void run() {
-                for (FileInfo f : mCurFileNameList) {
+                for (FileInfoModel f : mCurFileNameList) {
                     DeleteFile(f);
                 }
 
@@ -232,7 +232,7 @@ public class FileOperationHelper {
         return true;
     }
 
-    protected void DeleteFile(FileInfo f) {
+    protected void DeleteFile(FileInfoModel f) {
         if (f == null) {
             Log.e(LOG_TAG, "DeleteFile: null parameter");
             return;
@@ -253,7 +253,7 @@ public class FileOperationHelper {
         Log.v(LOG_TAG, "DeleteFile >>> " + f.filePath);
     }
 
-    private void CopyFile(FileInfo f, String dest) {
+    private void CopyFile(FileInfoModel f, String dest) {
         if (f == null || dest == null) {
             Log.e(LOG_TAG, "CopyFile: null parameter");
             return;
@@ -282,7 +282,7 @@ public class FileOperationHelper {
         Log.v(LOG_TAG, "CopyFile >>> " + f.filePath + "," + dest);
     }
 
-    private boolean MoveFile(FileInfo f, String dest) {
+    private boolean MoveFile(FileInfoModel f, String dest) {
         Log.v(LOG_TAG, "MoveFile >>> " + f.filePath + "," + dest);
 
         if (f == null || dest == null) {
@@ -300,10 +300,10 @@ public class FileOperationHelper {
         return false;
     }
 
-    private void copyFileList(ArrayList<FileInfo> files) {
+    private void copyFileList(ArrayList<FileInfoModel> files) {
         synchronized(mCurFileNameList) {
             mCurFileNameList.clear();
-            for (FileInfo f : files) {
+            for (FileInfoModel f : files) {
                 mCurFileNameList.add(f);
             }
         }

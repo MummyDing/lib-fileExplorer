@@ -33,19 +33,19 @@ import android.widget.TextView;
 
 import net.micode.fileexplorer.R;
 import net.micode.fileexplorer.util.Util;
-import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.util.FileIconHelper;
 
 public class InformationDialog extends AlertDialog {
     protected static final int ID_USER = 100;
-    private FileInfo mFileInfo;
+    private FileInfoModel mFileInfoModel;
     private FileIconHelper mFileIconHelper;
     private Context mContext;
     private View mView;
 
-    public InformationDialog(Context context, FileInfo f, FileIconHelper iconHelper) {
+    public InformationDialog(Context context, FileInfoModel f, FileIconHelper iconHelper) {
         super(context);
-        mFileInfo = f;
+        mFileInfoModel = f;
         mFileIconHelper = iconHelper;
         mContext = context;
     }
@@ -53,26 +53,26 @@ public class InformationDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         mView = getLayoutInflater().inflate(R.layout.information_dialog, null);
 
-        if (mFileInfo.IsDir) {
+        if (mFileInfoModel.IsDir) {
             setIcon(R.drawable.folder);
             asyncGetSize();
         } else {
             setIcon(R.drawable.file_icon_default);
         }
-        setTitle(mFileInfo.fileName);
+        setTitle(mFileInfoModel.fileName);
 
         ((TextView) mView.findViewById(R.id.information_size))
-                .setText(formatFileSizeString(mFileInfo.fileSize));
+                .setText(formatFileSizeString(mFileInfoModel.fileSize));
         ((TextView) mView.findViewById(R.id.information_location))
-                .setText(mFileInfo.filePath);
+                .setText(mFileInfoModel.filePath);
         ((TextView) mView.findViewById(R.id.information_modified)).setText(Util
-                .formatDateString(mContext, mFileInfo.ModifiedDate));
+                .formatDateString(mContext, mFileInfoModel.ModifiedDate));
         ((TextView) mView.findViewById(R.id.information_canread))
-                .setText(mFileInfo.canRead ? R.string.yes : R.string.no);
+                .setText(mFileInfoModel.canRead ? R.string.yes : R.string.no);
         ((TextView) mView.findViewById(R.id.information_canwrite))
-                .setText(mFileInfo.canWrite ? R.string.yes : R.string.no);
+                .setText(mFileInfoModel.canWrite ? R.string.yes : R.string.no);
         ((TextView) mView.findViewById(R.id.information_ishidden))
-                .setText(mFileInfo.isHidden ? R.string.yes : R.string.no);
+                .setText(mFileInfoModel.isHidden ? R.string.yes : R.string.no);
 
         setView(mView);
         setButton(BUTTON_NEGATIVE, mContext.getString(R.string.confirm_know), (DialogInterface.OnClickListener) null);
@@ -129,7 +129,7 @@ public class InformationDialog extends AlertDialog {
                 }
             }
 
-        }.execute(mFileInfo.filePath);
+        }.execute(mFileInfoModel.filePath);
     }
 
     private void onSize(final long size) {

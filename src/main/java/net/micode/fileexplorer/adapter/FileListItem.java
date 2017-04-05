@@ -32,21 +32,21 @@ import android.widget.ImageView;
 
 import net.micode.fileexplorer.FileManagerActivity;
 import net.micode.fileexplorer.R;
+import net.micode.fileexplorer.fragment.FileListFragment;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.util.FileViewInteractionHub;
 import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
-import net.micode.fileexplorer.fragment.FileViewFragment;
-import net.micode.fileexplorer.model.FileInfo;
 import net.micode.fileexplorer.util.FileIconHelper;
 import net.micode.fileexplorer.util.Util;
 
 public class FileListItem {
     public static void setupFileListItemInfo(Context context, View view,
-                                             FileInfo fileInfo, FileIconHelper fileIcon,
+                                             FileInfoModel fileInfoModel, FileIconHelper fileIcon,
                                              FileViewInteractionHub fileViewInteractionHub) {
 
         // if in moving mode, show selected file always
         if (fileViewInteractionHub.isMoveState()) {
-            fileInfo.Selected = fileViewInteractionHub.isFileSelected(fileInfo.filePath);
+            fileInfoModel.Selected = fileViewInteractionHub.isFileSelected(fileInfoModel.filePath);
         }
 
         ImageView checkbox = (ImageView) view.findViewById(R.id.file_checkbox);
@@ -54,25 +54,25 @@ public class FileListItem {
             checkbox.setVisibility(View.GONE);
         } else {
             checkbox.setVisibility(fileViewInteractionHub.canShowCheckBox() ? View.VISIBLE : View.GONE);
-            checkbox.setImageResource(fileInfo.Selected ? R.drawable.btn_check_on_holo_light
+            checkbox.setImageResource(fileInfoModel.Selected ? R.drawable.btn_check_on_holo_light
                     : R.drawable.btn_check_off_holo_light);
-            checkbox.setTag(fileInfo);
-            view.setSelected(fileInfo.Selected);
+            checkbox.setTag(fileInfoModel);
+            view.setSelected(fileInfoModel.Selected);
         }
 
-        Util.setText(view, R.id.file_name, fileInfo.fileName);
-        Util.setText(view, R.id.file_count, fileInfo.IsDir ? "(" + fileInfo.Count + ")" : "");
-        Util.setText(view, R.id.modified_time, Util.formatDateString(context, fileInfo.ModifiedDate));
-        Util.setText(view, R.id.file_size, (fileInfo.IsDir ? "" : Util.convertStorage(fileInfo.fileSize)));
+        Util.setText(view, R.id.file_name, fileInfoModel.fileName);
+        Util.setText(view, R.id.file_count, fileInfoModel.IsDir ? "(" + fileInfoModel.Count + ")" : "");
+        Util.setText(view, R.id.modified_time, Util.formatDateString(context, fileInfoModel.ModifiedDate));
+        Util.setText(view, R.id.file_size, (fileInfoModel.IsDir ? "" : Util.convertStorage(fileInfoModel.fileSize)));
 
         ImageView lFileImage = (ImageView) view.findViewById(R.id.file_image);
         ImageView lFileImageFrame = (ImageView) view.findViewById(R.id.file_image_frame);
 
-        if (fileInfo.IsDir) {
+        if (fileInfoModel.IsDir) {
             lFileImageFrame.setVisibility(View.GONE);
             lFileImage.setImageResource(R.drawable.folder);
         } else {
-            fileIcon.setIcon(fileInfo, lFileImage, lFileImageFrame);
+            fileIcon.setIcon(fileInfoModel, lFileImage, lFileImageFrame);
         }
     }
 
@@ -91,7 +91,7 @@ public class FileListItem {
             ImageView img = (ImageView) v.findViewById(R.id.file_checkbox);
             assert (img != null && img.getTag() != null);
 
-            FileInfo tag = (FileInfo) img.getTag();
+            FileInfoModel tag = (FileInfoModel) img.getTag();
             tag.Selected = !tag.Selected;
             ActionMode actionMode = ((FileManagerActivity) mContext).getActionMode();
             if (actionMode == null) {
@@ -165,13 +165,13 @@ public class FileListItem {
                 mFileViewInteractionHub.onOperationDelete();
                 mode.finish();
             } else if(id == R.id.action_copy) {
-                ((FileViewFragment) ((FileManagerActivity) mContext)
+                ((FileListFragment) ((FileManagerActivity) mContext)
                         .getFragment(Util.SDCARD_TAB_INDEX))
                         .copyFile(mFileViewInteractionHub.getSelectedFileList());
                 mode.finish();
                 scrollToSDcardTab();
             } else if (id == R.id.action_move) {
-                ((FileViewFragment) ((FileManagerActivity) mContext)
+                ((FileListFragment) ((FileManagerActivity) mContext)
                         .getFragment(Util.SDCARD_TAB_INDEX))
                         .moveToFile(mFileViewInteractionHub.getSelectedFileList());
                 mode.finish();

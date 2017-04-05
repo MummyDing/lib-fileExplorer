@@ -45,6 +45,7 @@ import android.widget.ListView;
 import com.github.mummyding.ymbase.base.BaseFragment;
 
 import net.micode.fileexplorer.FileManagerActivity.IBackPressedListener;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.util.FileViewInteractionHub;
 import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
 import net.micode.fileexplorer.model.GlobalConsts;
@@ -52,17 +53,16 @@ import net.micode.fileexplorer.IFileInteractionListener;
 import net.micode.fileexplorer.R;
 import net.micode.fileexplorer.util.Util;
 import net.micode.fileexplorer.adapter.FileListAdapter;
-import net.micode.fileexplorer.model.FileInfo;
 import net.micode.fileexplorer.util.FileCategoryHelper;
 import net.micode.fileexplorer.util.FileIconHelper;
 import net.micode.fileexplorer.util.FileSortHelper;
 
-public class FileViewFragment extends BaseFragment implements
+public class FileListFragment extends BaseFragment implements
         IFileInteractionListener, IBackPressedListener {
 
     public static final String EXT_FILTER_KEY = "ext_filter";
 
-    private static final String LOG_TAG = "FileViewFragment";
+    private static final String LOG_TAG = "FileListFragment";
 
     public static final String EXT_FILE_FIRST_KEY = "ext_file_first";
 
@@ -73,7 +73,7 @@ public class FileViewFragment extends BaseFragment implements
     private ListView mFileListView;
 
     // private TextView mCurrentPathTextView;
-    private ArrayAdapter<FileInfo> mAdapter;
+    private ArrayAdapter<FileInfoModel> mAdapter;
 
     private FileViewInteractionHub mFileViewInteractionHub;
 
@@ -81,7 +81,7 @@ public class FileViewFragment extends BaseFragment implements
 
     private FileIconHelper mFileIconHelper;
 
-    private ArrayList<FileInfo> mFileNameList = new ArrayList<FileInfo>();
+    private ArrayList<FileInfoModel> mFileNameList = new ArrayList<FileInfoModel>();
 
     private Activity mActivity;
 
@@ -277,7 +277,7 @@ public class FileViewFragment extends BaseFragment implements
             return false;
         }
         final int pos = computeScrollPosition(path);
-        ArrayList<FileInfo> fileList = mFileNameList;
+        ArrayList<FileInfoModel> fileList = mFileNameList;
         fileList.clear();
 
         File[] listFiles = file.listFiles(mFileCagetoryHelper.getFilter());
@@ -291,10 +291,10 @@ public class FileViewFragment extends BaseFragment implements
 
             String absolutePath = child.getAbsolutePath();
             if (Util.isNormalFile(absolutePath) && Util.shouldShowFile(absolutePath)) {
-                FileInfo lFileInfo = Util.GetFileInfo(child,
+                FileInfoModel lFileInfoModel = Util.GetFileInfo(child,
                         mFileCagetoryHelper.getFilter(), false);
-                if (lFileInfo != null) {
-                    fileList.add(lFileInfo);
+                if (lFileInfoModel != null) {
+                    fileList.add(lFileInfoModel);
                 }
             }
         }
@@ -353,7 +353,7 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     @Override
-    public void onPick(FileInfo f) {
+    public void onPick(FileInfoModel f) {
         try {
             Intent intent = Intent.parseUri(Uri.fromFile(new File(f.filePath)).toString(), 0);
             mActivity.setResult(Activity.RESULT_OK, intent);
@@ -404,17 +404,17 @@ public class FileViewFragment extends BaseFragment implements
         return false;
     }
 
-    public void copyFile(ArrayList<FileInfo> files) {
+    public void copyFile(ArrayList<FileInfoModel> files) {
         mFileViewInteractionHub.onOperationCopy(files);
     }
 
-    public void moveToFile(ArrayList<FileInfo> files) {
+    public void moveToFile(ArrayList<FileInfoModel> files) {
         mFileViewInteractionHub.moveFileFrom(files);
     }
 
     public interface SelectFilesCallback {
         // files equals null indicates canceled
-        void selected(ArrayList<FileInfo> files);
+        void selected(ArrayList<FileInfoModel> files);
     }
 
     @Override
@@ -423,7 +423,7 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     @Override
-    public FileInfo getItem(int pos) {
+    public FileInfoModel getItem(int pos) {
         if (pos < 0 || pos > mFileNameList.size() - 1)
             return null;
 
@@ -438,12 +438,12 @@ public class FileViewFragment extends BaseFragment implements
     }
 
     @Override
-    public ArrayList<FileInfo> getAllFiles() {
+    public ArrayList<FileInfoModel> getAllFiles() {
         return mFileNameList;
     }
 
     @Override
-    public void addSingleFile(FileInfo file) {
+    public void addSingleFile(FileInfoModel file) {
         mFileNameList.add(file);
         onDataChanged();
     }

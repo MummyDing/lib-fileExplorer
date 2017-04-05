@@ -30,7 +30,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import net.micode.fileexplorer.R;
-import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.model.FileInfoModel;
 
 public class IntentBuilder {
 
@@ -84,11 +84,11 @@ public class IntentBuilder {
         }
     }
 
-    public static Intent buildSendFile(ArrayList<FileInfo> files) {
+    public static Intent buildSendFile(ArrayList<FileInfoModel> files) {
         ArrayList<Uri> uris = new ArrayList<Uri>();
 
         String mimeType = "*/*";
-        for (FileInfo file : files) {
+        for (FileInfoModel file : files) {
             if (file.IsDir)
                 continue;
 

@@ -53,15 +53,15 @@ import android.widget.ListView;
 
 import net.micode.fileexplorer.FileManagerActivity;
 import net.micode.fileexplorer.adapter.FileListItem.ModeCallback;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.model.GlobalConsts;
 import net.micode.fileexplorer.IFileInteractionListener;
 import net.micode.fileexplorer.R;
 import net.micode.fileexplorer.util.FileOperationHelper.IOperationProgressListener;
 import net.micode.fileexplorer.util.FileSortHelper.SortMethod;
-import net.micode.fileexplorer.fragment.FileViewFragment.SelectFilesCallback;
+import net.micode.fileexplorer.fragment.FileListFragment.SelectFilesCallback;
 import net.micode.fileexplorer.widget.TextInputDialog;
 import net.micode.fileexplorer.widget.TextInputDialog.OnFinishListener;
-import net.micode.fileexplorer.model.FileInfo;
 import net.micode.fileexplorer.widget.InformationDialog;
 
 public class FileViewInteractionHub implements IOperationProgressListener {
@@ -69,7 +69,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     private IFileInteractionListener mFileViewListener;
 
-    private ArrayList<FileInfo> mCheckedFileNameList = new ArrayList<FileInfo>();
+    private ArrayList<FileInfoModel> mCheckedFileNameList = new ArrayList<FileInfoModel>();
 
     private FileOperationHelper mFileOperationHelper;
 
@@ -119,15 +119,15 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         if (mCheckedFileNameList.size() == 0) {
             int pos = mListViewContextMenuSelectedItem;
             if (pos != -1) {
-                FileInfo fileInfo = mFileViewListener.getItem(pos);
-                if (fileInfo != null) {
-                    mCheckedFileNameList.add(fileInfo);
+                FileInfoModel fileInfoModel = mFileViewListener.getItem(pos);
+                if (fileInfoModel != null) {
+                    mCheckedFileNameList.add(fileInfoModel);
                 }
             }
         }
     }
 
-    public ArrayList<FileInfo> getSelectedFileList() {
+    public ArrayList<FileInfoModel> getSelectedFileList() {
         return mCheckedFileNameList;
     }
 
@@ -153,7 +153,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         });
     }
 
-    public FileInfo getItem(int pos) {
+    public FileInfoModel getItem(int pos) {
         return mFileViewListener.getItem(pos);
     }
 
@@ -231,7 +231,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     public void onOperationSelectAll() {
         mCheckedFileNameList.clear();
-        for (FileInfo f : mFileViewListener.getAllFiles()) {
+        for (FileInfoModel f : mFileViewListener.getAllFiles()) {
             f.Selected = true;
             mCheckedFileNameList.add(f);
         }
@@ -326,7 +326,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         onOperationCopy(getSelectedFileList());
     }
 
-    public void onOperationCopy(ArrayList<FileInfo> files) {
+    public void onOperationCopy(ArrayList<FileInfoModel> files) {
         mFileOperationHelper.Copy(files);
         clearSelection();
 
@@ -395,8 +395,8 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     public void onOperationSend() {
-        ArrayList<FileInfo> selectedFileList = getSelectedFileList();
-        for (FileInfo f : selectedFileList) {
+        ArrayList<FileInfoModel> selectedFileList = getSelectedFileList();
+        for (FileInfoModel f : selectedFileList) {
             if (f.IsDir) {
                 AlertDialog dialog = new AlertDialog.Builder(mContext).setMessage(
                         R.string.error_info_cant_send_folder).setPositiveButton(R.string.confirm, null).create();
@@ -424,7 +424,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         if (getSelectedFileList().size() == 0)
             return;
 
-        final FileInfo f = getSelectedFileList().get(0);
+        final FileInfoModel f = getSelectedFileList().get(0);
         clearSelection();
 
         TextInputDialog dialog = new TextInputDialog(mContext, mContext.getString(R.string.operation_rename),
@@ -439,7 +439,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         dialog.show();
     }
 
-    private boolean doRename(final FileInfo f, String text) {
+    private boolean doRename(final FileInfoModel f, String text) {
         if (TextUtils.isEmpty(text))
             return false;
 
@@ -482,17 +482,17 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     public void onOperationDelete(int position) {
-        FileInfo file = mFileViewListener.getItem(position);
+        FileInfoModel file = mFileViewListener.getItem(position);
         if (file == null)
             return;
 
-        ArrayList<FileInfo> selectedFileList = new ArrayList<FileInfo>();
+        ArrayList<FileInfoModel> selectedFileList = new ArrayList<FileInfoModel>();
         selectedFileList.add(file);
         doOperationDelete(selectedFileList);
     }
 
-    private void doOperationDelete(final ArrayList<FileInfo> selectedFileList) {
-        final ArrayList<FileInfo> selectedFiles = new ArrayList<FileInfo>(selectedFileList);
+    private void doOperationDelete(final ArrayList<FileInfoModel> selectedFileList) {
+        final ArrayList<FileInfoModel> selectedFiles = new ArrayList<FileInfoModel>(selectedFileList);
         Dialog dialog = new AlertDialog.Builder(mContext)
                 .setMessage(mContext.getString(R.string.operation_delete_confirm_message))
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
@@ -515,7 +515,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         if (getSelectedFileList().size() == 0)
             return;
 
-        FileInfo file = getSelectedFileList().get(0);
+        FileInfoModel file = getSelectedFileList().get(0);
         if (file == null)
             return;
 
@@ -794,45 +794,45 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     public void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FileInfo lFileInfo = mFileViewListener.getItem(position);
+        FileInfoModel lFileInfoModel = mFileViewListener.getItem(position);
 //        showDropdownNavigation(false);
 
-        if (lFileInfo == null) {
+        if (lFileInfoModel == null) {
             Log.e(LOG_TAG, "file does not exist on position:" + position);
             return;
         }
 
         if (isInSelection()) {
-            boolean selected = lFileInfo.Selected;
+            boolean selected = lFileInfoModel.Selected;
             ActionMode actionMode = ((FileManagerActivity) mContext).getActionMode();
             ImageView checkBox = (ImageView) view.findViewById(R.id.file_checkbox);
             if (selected) {
-                mCheckedFileNameList.remove(lFileInfo);
+                mCheckedFileNameList.remove(lFileInfoModel);
                 checkBox.setImageResource(R.drawable.btn_check_off_holo_light);
             } else {
-                mCheckedFileNameList.add(lFileInfo);
+                mCheckedFileNameList.add(lFileInfoModel);
                 checkBox.setImageResource(R.drawable.btn_check_on_holo_light);
             }
             if (actionMode != null) {
                 if (mCheckedFileNameList.size() == 0) actionMode.finish();
                 else actionMode.invalidate();
             }
-            lFileInfo.Selected = !selected;
+            lFileInfoModel.Selected = !selected;
 
             Util.updateActionModeTitle(actionMode, mContext, mCheckedFileNameList.size());
             return;
         }
 
-        if (!lFileInfo.IsDir) {
+        if (!lFileInfoModel.IsDir) {
             if (mCurrentMode == Mode.Pick) {
-                mFileViewListener.onPick(lFileInfo);
+                mFileViewListener.onPick(lFileInfoModel);
             } else {
-                viewFile(lFileInfo);
+                viewFile(lFileInfoModel);
             }
             return;
         }
 
-        mCurrentPath = getAbsoluteName(mCurrentPath, lFileInfo.fileName);
+        mCurrentPath = getAbsoluteName(mCurrentPath, lFileInfoModel.fileName);
         ActionMode actionMode = ((FileManagerActivity) mContext).getActionMode();
         if (actionMode != null) {
             actionMode.finish();
@@ -862,7 +862,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
     }
 
     // check or uncheck
-    public boolean onCheckItem(FileInfo f, View v) {
+    public boolean onCheckItem(FileInfoModel f, View v) {
         if (isMoveState())
             return false;
 
@@ -891,7 +891,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
 
     public void clearSelection() {
         if (mCheckedFileNameList.size() > 0) {
-            for (FileInfo f : mCheckedFileNameList) {
+            for (FileInfoModel f : mCheckedFileNameList) {
                 if (f == null) {
                     continue;
                 }
@@ -902,9 +902,9 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         }
     }
 
-    private void viewFile(FileInfo lFileInfo) {
+    private void viewFile(FileInfoModel lFileInfoModel) {
         try {
-            IntentBuilder.viewFile(mContext, lFileInfo.filePath);
+            IntentBuilder.viewFile(mContext, lFileInfoModel.filePath);
         } catch (ActivityNotFoundException e) {
             Log.e(LOG_TAG, "fail to view file: " + e.toString());
         }
@@ -919,11 +919,11 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         return true;
     }
 
-    public void copyFile(ArrayList<FileInfo> files) {
+    public void copyFile(ArrayList<FileInfoModel> files) {
         mFileOperationHelper.Copy(files);
     }
 
-    public void moveFileFrom(ArrayList<FileInfo> files) {
+    public void moveFileFrom(ArrayList<FileInfoModel> files) {
         mFileOperationHelper.StartMove(files);
         showConfirmOperationBar(true);
         updateConfirmButtons();

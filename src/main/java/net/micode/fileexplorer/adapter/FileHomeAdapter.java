@@ -26,8 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.util.FileIconHelper;
-import net.micode.fileexplorer.model.FileInfo;
 import net.micode.fileexplorer.util.FileViewInteractionHub;
 import net.micode.fileexplorer.R;
 import net.micode.fileexplorer.util.Util;
@@ -36,7 +36,7 @@ import net.micode.fileexplorer.util.FileCategoryHelper;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class FileListCursorAdapter extends CursorAdapter {
+public class FileHomeAdapter extends CursorAdapter {
 
     private final LayoutInflater mFactory;
 
@@ -44,12 +44,12 @@ public class FileListCursorAdapter extends CursorAdapter {
 
     private FileIconHelper mFileIcon;
 
-    private HashMap<Integer, FileInfo> mFileNameList = new HashMap<Integer, FileInfo>();
+    private HashMap<Integer, FileInfoModel> mFileNameList = new HashMap<Integer, FileInfoModel>();
 
     private Context mContext;
 
-    public FileListCursorAdapter(Context context, Cursor cursor,
-            FileViewInteractionHub f, FileIconHelper fileIcon) {
+    public FileHomeAdapter(Context context, Cursor cursor,
+                           FileViewInteractionHub f, FileIconHelper fileIcon) {
         super(context, cursor, false /* auto-requery */);
         mFactory = LayoutInflater.from(context);
         mFileViewInteractionHub = f;
@@ -59,17 +59,17 @@ public class FileListCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        FileInfo fileInfo = getFileItem(cursor.getPosition());
-        if (fileInfo == null) {
+        FileInfoModel fileInfoModel = getFileItem(cursor.getPosition());
+        if (fileInfoModel == null) {
             // file is not existing, create a fake info
-            fileInfo = new FileInfo();
-            fileInfo.dbId = cursor.getLong(FileCategoryHelper.COLUMN_ID);
-            fileInfo.filePath = cursor.getString(FileCategoryHelper.COLUMN_PATH);
-            fileInfo.fileName = Util.getNameFromFilepath(fileInfo.filePath);
-            fileInfo.fileSize = cursor.getLong(FileCategoryHelper.COLUMN_SIZE);
-            fileInfo.ModifiedDate = cursor.getLong(FileCategoryHelper.COLUMN_DATE);
+            fileInfoModel = new FileInfoModel();
+            fileInfoModel.dbId = cursor.getLong(FileCategoryHelper.COLUMN_ID);
+            fileInfoModel.filePath = cursor.getString(FileCategoryHelper.COLUMN_PATH);
+            fileInfoModel.fileName = Util.getNameFromFilepath(fileInfoModel.filePath);
+            fileInfoModel.fileSize = cursor.getLong(FileCategoryHelper.COLUMN_SIZE);
+            fileInfoModel.ModifiedDate = cursor.getLong(FileCategoryHelper.COLUMN_DATE);
         }
-        FileListItem.setupFileListItemInfo(mContext, view, fileInfo, mFileIcon,
+        FileListItem.setupFileListItemInfo(mContext, view, fileInfoModel, mFileIcon,
                 mFileViewInteractionHub);
         view.findViewById(R.id.category_file_checkbox_area).setOnClickListener(
                 new FileListItem.FileItemOnClickListener(mContext, mFileViewInteractionHub));
@@ -86,7 +86,7 @@ public class FileListCursorAdapter extends CursorAdapter {
         super.changeCursor(cursor);
     }
 
-    public Collection<FileInfo> getAllFiles() {
+    public Collection<FileInfoModel> getAllFiles() {
         if (mFileNameList.size() == getCount())
             return mFileNameList.values();
 
@@ -96,9 +96,9 @@ public class FileListCursorAdapter extends CursorAdapter {
                 Integer position = Integer.valueOf(cursor.getPosition());
                 if (mFileNameList.containsKey(position))
                     continue;
-                FileInfo fileInfo = getFileInfo(cursor);
-                if (fileInfo != null) {
-                    mFileNameList.put(position, fileInfo);
+                FileInfoModel fileInfoModel = getFileInfo(cursor);
+                if (fileInfoModel != null) {
+                    mFileNameList.put(position, fileInfoModel);
                 }
             } while (cursor.moveToNext());
         }
@@ -106,22 +106,22 @@ public class FileListCursorAdapter extends CursorAdapter {
         return mFileNameList.values();
     }
 
-    public FileInfo getFileItem(int pos) {
+    public FileInfoModel getFileItem(int pos) {
         Integer position = Integer.valueOf(pos);
         if (mFileNameList.containsKey(position))
             return mFileNameList.get(position);
 
         Cursor cursor = (Cursor) getItem(pos);
-        FileInfo fileInfo = getFileInfo(cursor);
-        if (fileInfo == null)
+        FileInfoModel fileInfoModel = getFileInfo(cursor);
+        if (fileInfoModel == null)
             return null;
 
-        fileInfo.dbId = cursor.getLong(FileCategoryHelper.COLUMN_ID);
-        mFileNameList.put(position, fileInfo);
-        return fileInfo;
+        fileInfoModel.dbId = cursor.getLong(FileCategoryHelper.COLUMN_ID);
+        mFileNameList.put(position, fileInfoModel);
+        return fileInfoModel;
     }
 
-    private FileInfo getFileInfo(Cursor cursor) {
+    private FileInfoModel getFileInfo(Cursor cursor) {
         return (cursor == null || cursor.getCount() == 0) ? null : Util
                 .GetFileInfo(cursor.getString(FileCategoryHelper.COLUMN_PATH));
     }

@@ -19,7 +19,7 @@
 
 package net.micode.fileexplorer.model;
 
-public class FileInfo {
+public class FileInfoModel {
 
     public String fileName;
 

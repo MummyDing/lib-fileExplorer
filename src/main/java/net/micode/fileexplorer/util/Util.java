@@ -30,9 +30,9 @@ import android.view.ActionMode;
 import android.view.View;
 import android.widget.TextView;
 
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.model.GlobalConsts;
 import net.micode.fileexplorer.R;
-import net.micode.fileexplorer.model.FileInfo;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,35 +83,35 @@ public class Util {
         return !fullName.equals(ANDROID_SECURE);
     }
 
-    public static FileInfo GetFileInfo(String filePath) {
+    public static FileInfoModel GetFileInfo(String filePath) {
         File lFile = new File(filePath);
         if (!lFile.exists())
             return null;
 
-        FileInfo lFileInfo = new FileInfo();
-        lFileInfo.canRead = lFile.canRead();
-        lFileInfo.canWrite = lFile.canWrite();
-        lFileInfo.isHidden = lFile.isHidden();
-        lFileInfo.fileName = Util.getNameFromFilepath(filePath);
-        lFileInfo.ModifiedDate = lFile.lastModified();
-        lFileInfo.IsDir = lFile.isDirectory();
-        lFileInfo.filePath = filePath;
-        lFileInfo.fileSize = lFile.length();
-        return lFileInfo;
+        FileInfoModel lFileInfoModel = new FileInfoModel();
+        lFileInfoModel.canRead = lFile.canRead();
+        lFileInfoModel.canWrite = lFile.canWrite();
+        lFileInfoModel.isHidden = lFile.isHidden();
+        lFileInfoModel.fileName = Util.getNameFromFilepath(filePath);
+        lFileInfoModel.ModifiedDate = lFile.lastModified();
+        lFileInfoModel.IsDir = lFile.isDirectory();
+        lFileInfoModel.filePath = filePath;
+        lFileInfoModel.fileSize = lFile.length();
+        return lFileInfoModel;
     }
 
-    public static FileInfo GetFileInfo(File f, FilenameFilter filter, boolean showHidden) {
-        FileInfo lFileInfo = new FileInfo();
+    public static FileInfoModel GetFileInfo(File f, FilenameFilter filter, boolean showHidden) {
+        FileInfoModel lFileInfoModel = new FileInfoModel();
         String filePath = f.getPath();
         File lFile = new File(filePath);
-        lFileInfo.canRead = lFile.canRead();
-        lFileInfo.canWrite = lFile.canWrite();
-        lFileInfo.isHidden = lFile.isHidden();
-        lFileInfo.fileName = f.getName();
-        lFileInfo.ModifiedDate = lFile.lastModified();
-        lFileInfo.IsDir = lFile.isDirectory();
-        lFileInfo.filePath = filePath;
-        if (lFileInfo.IsDir) {
+        lFileInfoModel.canRead = lFile.canRead();
+        lFileInfoModel.canWrite = lFile.canWrite();
+        lFileInfoModel.isHidden = lFile.isHidden();
+        lFileInfoModel.fileName = f.getName();
+        lFileInfoModel.ModifiedDate = lFile.lastModified();
+        lFileInfoModel.IsDir = lFile.isDirectory();
+        lFileInfoModel.filePath = filePath;
+        if (lFileInfoModel.IsDir) {
             int lCount = 0;
             File[] files = lFile.listFiles(filter);
 
@@ -126,14 +126,14 @@ public class Util {
                     lCount++;
                 }
             }
-            lFileInfo.Count = lCount;
+            lFileInfoModel.Count = lCount;
 
         } else {
 
-            lFileInfo.fileSize = lFile.length();
+            lFileInfoModel.fileSize = lFile.length();
 
         }
-        return lFileInfo;
+        return lFileInfoModel;
     }
 
     /*

@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.util.FileIconHelper;
 import net.micode.fileexplorer.util.FileSortHelper;
 
@@ -39,7 +39,7 @@ public interface IFileInteractionListener {
 
     public void onDataChanged();
 
-    public void onPick(FileInfo f);
+    public void onPick(FileInfoModel f);
 
     public boolean shouldShowOperationPane();
 
@@ -63,13 +63,13 @@ public interface IFileInteractionListener {
 
     public FileIconHelper getFileIconHelper();
 
-    public FileInfo getItem(int pos);
+    public FileInfoModel getItem(int pos);
 
     public void sortCurrentList(FileSortHelper sort);
 
-    public Collection<FileInfo> getAllFiles();
+    public Collection<FileInfoModel> getAllFiles();
 
-    public void addSingleFile(FileInfo file);
+    public void addSingleFile(FileInfoModel file);
 
     public boolean onRefreshFileList(String path, FileSortHelper sort);
 

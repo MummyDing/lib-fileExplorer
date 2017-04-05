@@ -20,7 +20,7 @@
 package net.micode.fileexplorer.util;
 
 
-import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.R;
 import net.micode.fileexplorer.util.FileCategoryHelper.FileCategory;
 import net.micode.fileexplorer.util.FileIconLoader.IconLoadFinishListener;
@@ -102,9 +102,9 @@ public class FileIconHelper implements IconLoadFinishListener {
 
     }
 
-    public void setIcon(FileInfo fileInfo, ImageView fileImage, ImageView fileImageFrame) {
-        String filePath = fileInfo.filePath;
-        long fileId = fileInfo.dbId;
+    public void setIcon(FileInfoModel fileInfoModel, ImageView fileImage, ImageView fileImageFrame) {
+        String filePath = fileInfoModel.filePath;
+        long fileId = fileInfoModel.dbId;
         String extFromFilename = Util.getExtFromFilename(filePath);
         FileCategory fc = FileCategoryHelper.getCategoryFromPath(filePath);
         fileImageFrame.setVisibility(View.GONE);

@@ -19,7 +19,7 @@
 
 package net.micode.fileexplorer.util;
 
-import net.micode.fileexplorer.model.FileInfo;
+import net.micode.fileexplorer.model.FileInfoModel;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -60,10 +60,10 @@ public class FileSortHelper {
         return mComparatorList.get(mSort);
     }
 
-    private abstract class FileComparator implements Comparator<FileInfo> {
+    private abstract class FileComparator implements Comparator<FileInfoModel> {
 
         @Override
-        public int compare(FileInfo object1, FileInfo object2) {
+        public int compare(FileInfoModel object1, FileInfoModel object2) {
             if (object1.IsDir == object2.IsDir) {
                 return doCompare(object1, object2);
             }
@@ -77,26 +77,26 @@ public class FileSortHelper {
             }
         }
 
-        protected abstract int doCompare(FileInfo object1, FileInfo object2);
+        protected abstract int doCompare(FileInfoModel object1, FileInfoModel object2);
     }
 
     private Comparator cmpName = new FileComparator() {
         @Override
-        public int doCompare(FileInfo object1, FileInfo object2) {
+        public int doCompare(FileInfoModel object1, FileInfoModel object2) {
             return object1.fileName.compareToIgnoreCase(object2.fileName);
         }
     };
 
     private Comparator cmpSize = new FileComparator() {
         @Override
-        public int doCompare(FileInfo object1, FileInfo object2) {
+        public int doCompare(FileInfoModel object1, FileInfoModel object2) {
             return longToCompareInt(object1.fileSize - object2.fileSize);
         }
     };
 
     private Comparator cmpDate = new FileComparator() {
         @Override
-        public int doCompare(FileInfo object1, FileInfo object2) {
+        public int doCompare(FileInfoModel object1, FileInfoModel object2) {
             return longToCompareInt(object2.ModifiedDate - object1.ModifiedDate);
         }
     };
@@ -107,7 +107,7 @@ public class FileSortHelper {
 
     private Comparator cmpType = new FileComparator() {
         @Override
-        public int doCompare(FileInfo object1, FileInfo object2) {
+        public int doCompare(FileInfoModel object1, FileInfoModel object2) {
             int result = Util.getExtFromFilename(object1.fileName).compareToIgnoreCase(
                     Util.getExtFromFilename(object2.fileName));
             if (result != 0)

@@ -23,13 +23,13 @@ import android.widget.TextView;
 import com.github.mummyding.ymbase.base.BaseFragment;
 
 import net.micode.fileexplorer.FileManagerActivity;
+import net.micode.fileexplorer.model.FileInfoModel;
 import net.micode.fileexplorer.util.FileCategoryHelper;
 import net.micode.fileexplorer.util.FileCategoryHelper.CategoryInfo;
 import net.micode.fileexplorer.util.FileCategoryHelper.FileCategory;
 import net.micode.fileexplorer.FileManagerActivity.IBackPressedListener;
 import net.micode.fileexplorer.util.FileIconHelper;
-import net.micode.fileexplorer.model.FileInfo;
-import net.micode.fileexplorer.adapter.FileListCursorAdapter;
+import net.micode.fileexplorer.adapter.FileHomeAdapter;
 import net.micode.fileexplorer.util.FileSortHelper;
 import net.micode.fileexplorer.util.FileViewInteractionHub;
 import net.micode.fileexplorer.util.FileViewInteractionHub.Mode;
@@ -46,18 +46,18 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FileCategoryFragment extends BaseFragment implements IFileInteractionListener,
+public class FileHomeFragment extends BaseFragment implements IFileInteractionListener,
         IBackPressedListener {
 
     public static final String EXT_FILETER_KEY = "ext_filter";
 
-    private static final String LOG_TAG = "FileCategoryFragment";
+    private static final String LOG_TAG = "FileHomeFragment";
 
     private static HashMap<Integer, FileCategory> button2Category = new HashMap<Integer, FileCategory>();
 
     private HashMap<FileCategory, Integer> categoryIndex = new HashMap<FileCategory, Integer>();
 
-    private FileListCursorAdapter mAdapter;
+    private FileHomeAdapter mAdapter;
 
     private FileViewInteractionHub mFileViewInteractionHub;
 
@@ -89,12 +89,12 @@ public class FileCategoryFragment extends BaseFragment implements IFileInteracti
     }
 
     private ListView mFileListView;
-    private FileViewFragment mFileViewFragment;
+    private FileListFragment mFileListFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mActivity = getActivity();
-        mFileViewFragment = (FileViewFragment) ((FileManagerActivity) mActivity)
+        mFileListFragment = (FileListFragment) ((FileManagerActivity) mActivity)
                 .getFragment(Util.SDCARD_TAB_INDEX);
         mRootView = inflater.inflate(R.layout.file_explorer_category, container, false);
         curViewPage = ViewPage.Invalid;
@@ -113,7 +113,7 @@ public class FileCategoryFragment extends BaseFragment implements IFileInteracti
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                mAdapter = new FileListCursorAdapter(mActivity, null, mFileViewInteractionHub, mFileIconHelper);
+                mAdapter = new FileHomeAdapter(mActivity, null, mFileViewInteractionHub, mFileIconHelper);
                 mFileListView = (ListView) mRootView.findViewById(R.id.file_path_list);
                 mFileListView.setAdapter(mAdapter);
                 setupClick();
@@ -348,7 +348,7 @@ public class FileCategoryFragment extends BaseFragment implements IFileInteracti
     }
 
     @Override
-    public void onPick(FileInfo f) {
+    public void onPick(FileInfoModel f) {
         // do nothing
     }
 
@@ -411,17 +411,17 @@ public class FileCategoryFragment extends BaseFragment implements IFileInteracti
     }
 
     @Override
-    public void addSingleFile(FileInfo file) {
+    public void addSingleFile(FileInfoModel file) {
         refreshList();
     }
 
     @Override
-    public Collection<FileInfo> getAllFiles() {
+    public Collection<FileInfoModel> getAllFiles() {
         return mAdapter.getAllFiles();
     }
 
     @Override
-    public FileInfo getItem(int pos) {
+    public FileInfoModel getItem(int pos) {
         return mAdapter.getFileItem(pos);
     }
 
@@ -439,15 +439,15 @@ public class FileCategoryFragment extends BaseFragment implements IFileInteracti
         mFileViewInteractionHub.refreshFileList();
     }
 
-    private void copyFileInFileView(ArrayList<FileInfo> files) {
+    private void copyFileInFileView(ArrayList<FileInfoModel> files) {
         if (files.size() == 0) return;
-        mFileViewFragment.copyFile(files);
+        mFileListFragment.copyFile(files);
         mActivity.getActionBar().setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
     }
 
-    private void startMoveToFileView(ArrayList<FileInfo> files) {
+    private void startMoveToFileView(ArrayList<FileInfoModel> files) {
         if (files.size() == 0) return;
-        mFileViewFragment.moveToFile(files);
+        mFileListFragment.moveToFile(files);
         mActivity.getActionBar().setSelectedNavigationItem(Util.SDCARD_TAB_INDEX);
     }
 
