@@ -34,7 +34,6 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/file_info_layout"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
