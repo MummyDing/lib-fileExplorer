@@ -20,8 +20,8 @@
 package com.github.mummyding.ymsecurity.lib_filemanager.util;
 
 
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
-import net.micode.fileexplorer.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileCategoryHelper.FileCategory;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileIconLoader.IconLoadFinishListener;
 

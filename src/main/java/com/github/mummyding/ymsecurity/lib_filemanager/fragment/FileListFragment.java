@@ -45,12 +45,12 @@ import android.widget.ListView;
 import com.github.mummyding.ymbase.base.BaseFragment;
 
 import com.github.mummyding.ymsecurity.lib_filemanager.FileManagerActivity.IBackPressedListener;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileViewInteractionHub;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileViewInteractionHub.Mode;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.GlobalConsts;
 import com.github.mummyding.ymsecurity.lib_filemanager.IFileInteractionListener;
-import net.micode.fileexplorer.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.Util;
 import com.github.mummyding.ymsecurity.lib_filemanager.adapter.FileListAdapter;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileCategoryHelper;

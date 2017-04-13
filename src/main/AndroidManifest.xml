@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.micode.fileexplorer"
+    package="com.github.mummyding.ymsecurity.lib_filemanager"
     android:versionCode="1"
     android:versionName="2.2.0">
 

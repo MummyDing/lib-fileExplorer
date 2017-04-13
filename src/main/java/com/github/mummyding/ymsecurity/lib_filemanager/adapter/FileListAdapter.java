@@ -25,10 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileIconHelper;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileViewInteractionHub;
-import net.micode.fileexplorer.R;
 
 import java.util.List;
 

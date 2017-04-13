@@ -30,9 +30,9 @@ import android.view.ActionMode;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.GlobalConsts;
-import net.micode.fileexplorer.R;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -26,7 +26,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import net.micode.fileexplorer.R;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 
 public class TextInputDialog extends AlertDialog {
     private String mInputText;

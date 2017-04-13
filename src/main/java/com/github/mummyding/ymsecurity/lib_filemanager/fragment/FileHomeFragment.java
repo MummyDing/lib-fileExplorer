@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.github.mummyding.ymbase.base.BaseFragment;
 
 import com.github.mummyding.ymsecurity.lib_filemanager.FileManagerActivity;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileCategoryHelper;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileCategoryHelper.CategoryInfo;
@@ -35,7 +36,6 @@ import com.github.mummyding.ymsecurity.lib_filemanager.util.FileViewInteractionH
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileViewInteractionHub.Mode;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.GlobalConsts;
 import com.github.mummyding.ymsecurity.lib_filemanager.IFileInteractionListener;
-import net.micode.fileexplorer.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.Util;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.Util.SDCardInfo;
 import com.github.mummyding.ymsecurity.lib_filemanager.widget.CategoryBar;

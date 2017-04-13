@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import net.micode.fileexplorer.R;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 
 public class CategoryBar extends View {
     private static final String LOG_TAG = "CategoryBar";

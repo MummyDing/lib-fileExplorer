@@ -52,11 +52,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.github.mummyding.ymsecurity.lib_filemanager.FileManagerActivity;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.adapter.FileListItem.ModeCallback;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.GlobalConsts;
 import com.github.mummyding.ymsecurity.lib_filemanager.IFileInteractionListener;
-import net.micode.fileexplorer.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileOperationHelper.IOperationProgressListener;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileSortHelper.SortMethod;
 import com.github.mummyding.ymsecurity.lib_filemanager.fragment.FileListFragment.SelectFilesCallback;

@@ -29,9 +29,9 @@ import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Video;
 import android.util.Log;
 
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileSortHelper.SortMethod;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.MediaFile.MediaFileType;
-import net.micode.fileexplorer.R;
 
 import java.io.FilenameFilter;
 import java.util.HashMap;

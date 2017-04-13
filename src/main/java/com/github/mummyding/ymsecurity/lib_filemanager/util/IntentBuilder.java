@@ -29,7 +29,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import net.micode.fileexplorer.R;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 
 public class IntentBuilder {

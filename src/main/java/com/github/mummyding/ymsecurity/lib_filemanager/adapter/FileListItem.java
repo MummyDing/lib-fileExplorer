@@ -32,7 +32,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.github.mummyding.ymsecurity.lib_filemanager.FileManagerActivity;
-import net.micode.fileexplorer.R;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.fragment.FileListFragment;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileViewInteractionHub;

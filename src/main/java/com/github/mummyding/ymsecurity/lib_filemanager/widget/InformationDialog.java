@@ -31,7 +31,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
-import net.micode.fileexplorer.R;
+import com.github.mummyding.ymsecurity.lib_filemanager.R;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.Util;
 import com.github.mummyding.ymsecurity.lib_filemanager.model.FileInfoModel;
 import com.github.mummyding.ymsecurity.lib_filemanager.util.FileIconHelper;

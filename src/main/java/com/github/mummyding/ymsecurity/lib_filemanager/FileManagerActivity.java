@@ -29,7 +29,6 @@ import com.github.mummyding.ymbase.base.BaseSwipeBackActivity;
 import com.github.mummyding.ymsecurity.lib_filemanager.fragment.FileHomeFragment;
 import com.github.mummyding.ymsecurity.lib_filemanager.fragment.FileListFragment;
 
-import net.micode.fileexplorer.R;
 
 public class FileManagerActivity extends BaseSwipeBackActivity {
     ActionMode mActionMode;
