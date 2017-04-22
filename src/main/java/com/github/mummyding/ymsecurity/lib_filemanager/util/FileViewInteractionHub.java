@@ -188,11 +188,7 @@ public class FileViewInteractionHub implements IOperationProgressListener {
         @Override
         public void onClick(View v) {
             long id = v.getId();
-            if (id == R.id.button_operation_copy) {
-                onOperationCopy();
-            } else if (id == R.id.button_operation_move) {
-                onOperationMove();
-            } else if (id == R.id.button_operation_send) {
+            if (id == R.id.button_operation_send) {
                 onOperationSend();
             } else if (id == R.id.button_operation_delete) {
                 onOperationDelete();

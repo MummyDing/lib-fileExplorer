@@ -164,16 +164,6 @@
             android:drawableTop="@drawable/operation_button_delete"
             style="@style/FileViewOperationButtonStytle" />
         <TextView
-            android:id="@+id/button_operation_copy"
-            android:drawableTop="@drawable/operation_button_copy"
-            android:text="@string/operation_copy"
-            style="@style/FileViewOperationButtonStytle" />
-        <TextView
-            android:id="@+id/button_operation_move"
-            android:drawableTop="@drawable/operation_button_move"
-            android:text="@string/operation_move"
-            style="@style/FileViewOperationButtonStytle" />
-        <TextView
             android:id="@+id/button_operation_send"
             android:drawableTop="@drawable/operation_button_send"
             android:text="@string/operation_send"

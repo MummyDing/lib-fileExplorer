@@ -297,7 +297,7 @@ public class FileHomeFragment extends BaseFragment implements IFileInteractionLi
         return curViewPage == ViewPage.Home;
     }
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (curViewPage != ViewPage.Category) {
             return;
@@ -310,7 +310,7 @@ public class FileHomeFragment extends BaseFragment implements IFileInteractionLi
         if (!isHomePage()) {
             mFileViewInteractionHub.onPrepareOptionsMenu(menu);
         }
-    }
+    }*/
 
     public boolean onRefreshFileList(String path, FileSortHelper sort) {
         FileCategory curCategory = mFileCagetoryHelper.getCurCategory();
@@ -360,15 +360,6 @@ public class FileHomeFragment extends BaseFragment implements IFileInteractionLi
     @Override
     public boolean onOperation(int id) {
         mFileViewInteractionHub.addContextMenuSelectedItem();
-        if (id == R.id.button_operation_copy ) {
-            copyFileInFileView(mFileViewInteractionHub.getSelectedFileList());
-            mFileViewInteractionHub.clearSelection();
-            return true;
-        } else if (id == R.id.button_operation_move) {
-            startMoveToFileView(mFileViewInteractionHub.getSelectedFileList());
-            mFileViewInteractionHub.clearSelection();
-            return true;
-        }
         switch (id) {
             case GlobalConsts.MENU_COPY:
                 copyFileInFileView(mFileViewInteractionHub.getSelectedFileList());

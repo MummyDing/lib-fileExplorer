@@ -163,18 +163,6 @@ public class FileListItem {
             if (id == R.id.action_delete) {
                 mFileViewInteractionHub.onOperationDelete();
                 mode.finish();
-            } else if(id == R.id.action_copy) {
-                ((FileListFragment) ((FileManagerActivity) mContext)
-                        .getFragment(Util.SDCARD_TAB_INDEX))
-                        .copyFile(mFileViewInteractionHub.getSelectedFileList());
-                mode.finish();
-                scrollToSDcardTab();
-            } else if (id == R.id.action_move) {
-                ((FileListFragment) ((FileManagerActivity) mContext)
-                        .getFragment(Util.SDCARD_TAB_INDEX))
-                        .moveToFile(mFileViewInteractionHub.getSelectedFileList());
-                mode.finish();
-                scrollToSDcardTab();
             } else if (id == R.id.action_send) {
                 mFileViewInteractionHub.onOperationSend();
                 mode.finish();

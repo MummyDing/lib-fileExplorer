@@ -114,9 +114,7 @@ public class FileListFragment extends BaseFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mActivity = getActivity();
-        // getWindow().setFormat(android.graphics.PixelFormat.RGBA_8888);
         mRootView = inflater.inflate(R.layout.file_explorer_list, container, false);
-//        ActivitiesManager.getInstance().registerActivity(ActivitiesManager.ACTIVITY_FILE_VIEW, mActivity);
 
         mFileCagetoryHelper = new FileCategoryHelper(mActivity);
         mFileViewInteractionHub = new FileViewInteractionHub(this);
